@@ -18,3 +18,7 @@
 - `/pages/profile/password` - изменение пароля
 - `/pages/notfound/` - страница 404
 - `/pages/error/` - страница 5\*\*
+
+## Ссылка на опубликованный проект
+
+https://middle-messenger-praktikum-yandex-nh6x.onrender.com/
