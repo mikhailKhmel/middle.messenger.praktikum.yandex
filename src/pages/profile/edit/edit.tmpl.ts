@@ -14,7 +14,7 @@ export default `
             {{>input type="file" id="avatar" name="avatar"}}
         </div>
         <hr>
-        <div class="profile-info">
+        <form class="profile-info">
             <div class="row">
                 <label for="email">Почта</label>
                 {{>input type="text" id="email" name="email"}}
@@ -28,8 +28,8 @@ export default `
                 {{>input type="text" id="first_name" name="first_name"}}
             </div>
             <div class="row">
-                <label for="last_name">Фамилия</label>
-                {{>input type="text" id="last_name" name="last_name"}}
+                <label for="second_name">Фамилия</label>
+                {{>input type="text" id="second_name" name="second_name"}}
             </div>
             <div class="row">
                 <label for="display_name">Имя в чате</label>
@@ -39,11 +39,10 @@ export default `
                 <label for="phone">Номер телефона</label>
                 {{>input type="phone" id="phone" name="phone"}}
             </div>
-        </div>
-        <hr>
-        <div class="button-save">
-            {{>button-link label="Сохранить" href="/pages/profile/"}}
-        </div>        
+            <div class="button-save">
+                {{>button-link label="Сохранить" href="/pages/profile/"}}
+            </div>  
+        </form>
     </div>
 </div>
 `
