@@ -1,17 +1,33 @@
 import './signin.less'
-import Handlebars from 'handlebars'
 import signinTmpl from './signin.tmpl'
-import { button } from '../../components/button'
-import { buttonLink } from '../../components/button-link'
-import { input } from '../../components/input'
+import ButtonLink from '../../components/button-link'
+import Input from '../../components/input'
+import Center from '../../components/center'
+import { render } from '../../utils/renderDOM'
+import Block, { Props } from '../../types/block'
 
-Handlebars.registerPartial('button', button)
-Handlebars.registerPartial('button-link', buttonLink)
-Handlebars.registerPartial('input', input)
+interface IProps {
+  loginInput: Block
+  passwordInput: Block
+  button: Block
+}
+
+class SignIn extends Block {
+  constructor(props: IProps) {
+    super('div', props)
+  }
+
+  render(): string {
+    return this.compile(signinTmpl, this.props)
+  }
+}
 
 document.addEventListener('DOMContentLoaded', () => {
-  const root = document.querySelector('#root')
+  const buttonLink = new ButtonLink({ href: '/pages/main/', label: 'Войти' })
+  const loginInput = new Input({ id: 'login', type: 'text', name: 'login' })
+  const passwordInput = new Input({ id: 'password', type: 'password', name: 'password' })
+  const signIn = new SignIn({ loginInput, passwordInput, button: buttonLink })
+  const center = new Center({ children: signIn })
 
-  const template = Handlebars.compile(signinTmpl)
-  root!.innerHTML = template({})
+  render('#root', center)
 })

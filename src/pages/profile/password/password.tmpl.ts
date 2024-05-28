@@ -10,20 +10,20 @@ export default `
         <div class="profile-info">
             <div class="row">
                 <label for="oldPassword">Старый пароль</label>
-                {{>input type="password" id="oldPassword" name="oldPassword"}}
+                {{{oldPassword}}}
             </div>
             <div class="row">
                 <label for="newPassword">Новый пароль</label>
-                {{>input type="password" id="newPassword" name="newPassword"}}
+                {{{newPassword1}}}
             </div>
             <div class="row">
                 <label for="newPassword">Повторите новый пароль</label>
-                {{>input type="password" id="newPassword" name="newPassword"}}
+                {{{newPassword2}}}
             </div>
         </div>
         <hr>
         <div class="button-save">
-            {{>button-link label="Сохранить" href="/pages/profile/"}}
+            {{{saveButton}}}
         </div>        
     </div>
 </div>

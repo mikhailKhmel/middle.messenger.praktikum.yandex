@@ -1,1 +1,1 @@
-export default `<input class="input" id="{{id}}" name="{{name}}" type="{{type}}" {{required}} placeholder="{{placeholder}}"/>`
+export default `<input class="input" id="{{id}}" name="{{name}}" type="{{type}}" {{required}} placeholder="{{placeholder}}" >`

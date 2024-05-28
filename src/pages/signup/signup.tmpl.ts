@@ -7,34 +7,33 @@ export default `
         <form class="card-form">
             <div class="card-form-row">
                 <label for="email">Почта</label>
-                {{> input id="email" type="email" name="email" required="required"}}
+                {{{inputEmail}}}
             </div>
             <div class="card-form-row">
                 <label for="login">Имя пользователя</label>
-                {{> input id="login" type="text" name="login" required="required"}}
+                {{{inputLogin}}}
             </div>
             <div class="card-form-row">
                 <label for="first_name">Имя</label>
-                {{> input id="first_name" type="text" name="first_name" required="required"}}
+                {{{inputFirstname}}}
             </div>
             <div class="card-form-row">
                 <label for="last_name">Фамилия</label>
-                {{> input id="last_name" type="text" name="last_name" required="required"}}
+                {{{inputLastname}}} 
             </div>
             <div class="card-form-row">
                 <label for="phone">Телефон</label>
-                {{> input id="phone" type="tel" name="phone" required="required"}}
+                {{{inputPhone}}}
             </div>
             <div class="card-form-row">
                 <label for="password">Пароль</label>
-                {{> input id="password" type="password" name="password" required="required"}}
+                {{{inputFirstPassword}}}
             </div>
             <div class="card-form-row">
                 <label for="password">Повторите пароль</label>
-                {{> input id="password" type="password" name="password" required="required"}}
+                {{{inputSecondPassword}}}
             </div>
-            <!-- {{> button label="Зарегистрироваться"}} -->
-            {{> button-link href="/pages/main/" label="Зарегистрироваться"}}
+            {{{button}}}
             <a href="/pages/signin/">Войти</a>
         </form>
     </div>

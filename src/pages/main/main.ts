@@ -1,48 +1,35 @@
-import { contact } from '../../components/contact'
-import { input } from '../../components/input'
-import { message } from '../../components/message'
-import { profile } from '../../components/profile'
+import Contact from '../../components/contact'
+import Input from '../../components/input'
+import Message from '../../components/message'
+import Profile from '../../components/profile'
+import Block from '../../types/block'
+import getContacts from '../../utils/getContacts'
+import getMessages from '../../utils/getMessages'
+import { render } from '../../utils/renderDOM'
 import './main.less'
 import mainTmpl from './main.tmpl'
-import Handlebars from 'handlebars'
 
-Handlebars.registerPartial('contact', contact)
-Handlebars.registerPartial('message', message)
-Handlebars.registerPartial('input', input)
-Handlebars.registerPartial('profile', profile)
+interface IProps {
+  profile: Block
+  contacts: string[]
+  messages: string[]
+  messageInput: Block
+}
 
-function getContacts() {
-  const contacts: { username: string }[] = []
-  for (let i = 0; i < 20; i++) {
-    contacts.push({ username: `Пользователь ${i}` })
+class Main extends Block {
+  constructor(props: IProps) {
+    super('div', props)
   }
-  return contacts
-}
 
-function getMessages() {
-  const messages: { message: string; isIncome: boolean }[] = []
-  for (let i = 0; i < 100; i++) {
-    messages.push({
-      message: `текст ${i}`,
-      isIncome: Math.round(Math.random()) === 0,
-    })
+  render(): string {
+    return this.compile(mainTmpl, this.props)
   }
-  return messages
-}
-
-function render(props: any) {
-  const root = document.querySelector('#root')
-  const template = Handlebars.compile(mainTmpl)
-  root!.innerHTML = template(props)
-}
-
-function init() {
-  const contacts = getContacts()
-  const messages = getMessages()
-  const props = { contacts, messages }
-  render(props)
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  init()
+  const contacts = getContacts().map((x) => new Contact({ name: x.username }).render())
+  const messages = getMessages().map((x) => new Message(x).render())
+  const messageInput = new Input({ id: 'message', name: 'message', type: 'text', placeholder: 'Введите сообщение' })
+  const main = new Main({ profile: new Profile(), contacts, messages, messageInput })
+  render('#root', main)
 })

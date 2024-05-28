@@ -1,10 +1,23 @@
 import './notfound.less'
-import Handlebars from 'handlebars'
 import tmpl404 from './notfound.tmpl'
 import notfoudImg from '../../assets/tumbleweed.gif'
+import Block from '../../types/block'
+import { render } from '../../utils/renderDOM'
+
+interface IProps {
+  img: string
+}
+
+class Notfound extends Block {
+  constructor(props: IProps) {
+    super('div', props)
+  }
+
+  render(): string {
+      return this.compile(tmpl404, this.props)
+  }
+}
 
 document.addEventListener('DOMContentLoaded', () => {
-  const root = document.querySelector('#root')
-  const template = Handlebars.compile(tmpl404)
-  root!.innerHTML = template({ img: notfoudImg })
+  render('#root', new Notfound({img: notfoudImg}))
 })

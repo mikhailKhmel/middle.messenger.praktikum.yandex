@@ -1,8 +1,15 @@
 import './profile.less'
 import Handlebars from 'handlebars'
 import profileTmpl from './profile.tmpl'
+import Block, { Props } from '../../types/block'
 
-export const profile = (context: any) => {
-  const template = Handlebars.compile(profileTmpl)
-  return template(context)
+export default class Profile extends Block {
+  constructor(props?: Props) {
+    super('section', props)
+  }
+
+  render(): string {
+    const template = Handlebars.compile(profileTmpl)
+    return template(this.props)
+  }
 }

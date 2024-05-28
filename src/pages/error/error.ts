@@ -1,9 +1,20 @@
 import './error.less'
-import Handlebars from 'handlebars'
-import tmpl404 from './error.tmpl'
+import errorTmpl from './error.tmpl'
+import Block from '../../types/block'
+import { render } from '../../utils/renderDOM'
+
+interface IProps {}
+
+class Error extends Block {
+  constructor(props: IProps) {
+    super('div', props)
+  }
+
+  render(): string {
+    return this.compile(errorTmpl, this.props)
+  }
+}
 
 document.addEventListener('DOMContentLoaded', () => {
-  const root = document.querySelector('#root')
-  const template = Handlebars.compile(tmpl404)
-  root!.innerHTML = template({})
+  render('#root', new Error({}))
 })

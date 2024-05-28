@@ -1,8 +1,17 @@
 import './contact.less'
-import Handlebars from 'handlebars'
 import contactTmpl from './contact.tmpl'
+import Block from '../../types/block'
 
-export const contact = (context: any) => {
-  const template = Handlebars.compile(contactTmpl)
-  return template(context)
+interface IProps {
+  name: string
+}
+
+export default class Contact extends Block {
+  constructor(props: IProps) {
+    super('div', props)
+  }
+
+  render(): string {
+    return this.compile(contactTmpl, this.props)
+  }
 }
