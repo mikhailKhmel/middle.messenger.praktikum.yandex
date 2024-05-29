@@ -1,16 +1,9 @@
 {
   "extends": "airbnb",
-  "env": {
-    "browser": true,
-    "node": true,
-    "es6": true
-  },
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint"],
   "rules": {
-    "semi": ["error", "always"], // пример добавления кастомного правила
-    "quotes": ["error", "double"]
-  },
-  "parserOptions": {
-    "ecmaVersion": 2021,
-    "sourceType": "module"
+    "max-len": [2, 100],
+    "@typescript-eslint/no-unused-vars": 2
   }
 }
