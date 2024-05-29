@@ -4,17 +4,24 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "lint": "eslint . --ext .js,.ts,.tsx",
+    "lint:fix": "eslint . --ext .js,.ts,.tsx --fix",
+    "format": "prettier --write \"src/**/*.{js,ts,tsx,json,css}\"",
     "dev": "vite --host",
     "build": "tsc && vite build",
     "start": "npm run build && node server.js",
     "preview": "vite preview"
   },
   "devDependencies": {
+    "@eslint/js": "^9.3.0",
     "@types/express": "^4.17.21",
     "@types/node": "^20.12.7",
     "@types/uuid": "^9.0.8",
+    "eslint": "^9.3.0",
     "express": "^4.19.2",
     "less": "^4.2.0",
+    "stylelint": "^16.6.1",
+    "stylelint-config-standard": "^36.0.0",
     "typescript": "^5.2.2",
     "vite": "^5.2.0"
   },

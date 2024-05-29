@@ -34,6 +34,7 @@ export default `
                 {{{inputSecondPassword}}}
             </div>
             {{{button}}}
+            <a href="/pages/main/">Дальше</a>
             <a href="/pages/signin/">Войти</a>
         </form>
     </div>
