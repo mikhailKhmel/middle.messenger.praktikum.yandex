@@ -21,4 +21,4 @@
 
 ## Ссылка на опубликованный проект
 
-https://middle-messenger-praktikum-yandex-nh6x.onrender.com/
+https://messenger-mikhailkhmel.netlify.app/
