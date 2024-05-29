@@ -1,27 +1,27 @@
-import './signin.less'
-import signinTmpl from './signin.tmpl'
-import Input from '../../components/input'
-import Center from '../../components/center'
-import { render } from '../../utils/renderDOM'
-import Block, { Props } from '../../types/block'
-import Button from '../../components/button'
-import Form from '../../components/form'
-import SignInForm from '../../components/signinform'
-import FormInput from '../../components/forminput'
-import { validateLogin, validatePassword } from '../../utils/validation'
+import './signin.less';
+import signinTmpl from './signin.tmpl';
+import Input from '../../components/input';
+import Center from '../../components/center';
+import { render } from '../../utils/renderDOM';
+import Block, { Props } from '../../types/block';
+import Button from '../../components/button';
+import Form from '../../components/form';
+import SignInForm from '../../components/signinform';
+import FormInput from '../../components/forminput';
+import { validateLogin, validatePassword } from '../../utils/validation';
 
 class SignIn extends Block {
   constructor(props: Props) {
-    super('div', props)
+    super('div', props);
   }
 
   render(): DocumentFragment {
-    return this.compile(signinTmpl, this.props)
+    return this.compile(signinTmpl, this.props);
   }
 }
 
-let loginValue: string
-let passwordValue: string
+let loginValue: string;
+let passwordValue: string;
 
 document.addEventListener('DOMContentLoaded', () => {
   const loginInput = new Input({
@@ -30,57 +30,61 @@ document.addEventListener('DOMContentLoaded', () => {
     name: 'login',
     events: {
       blur: (event: any) => {
-        const value = event.target.value
-        const isValidate = validateLogin(value)
-        loginFormInput.setProps({ error: isValidate ? '' : 'Логин невалиден' })
+        const { value } = event.target;
+        const isValidate = validateLogin(value);
+        loginFormInput.setProps({ error: isValidate ? '' : 'Логин невалиден' });
         if (isValidate) {
-          loginValue = value
+          loginValue = value;
         }
       },
     },
-  })
+  });
   const passwordInput = new Input({
     id: 'password',
     type: 'password',
     name: 'password',
     events: {
       blur: (event: any) => {
-        const value = event.target.value
-        const isValidate = validatePassword(value)
-        passwordFormInput.setProps({ error: isValidate ? '' : 'Пароль невалиден' })
+        const { value } = event.target;
+        const isValidate = validatePassword(value);
+        passwordFormInput.setProps({ error: isValidate ? '' : 'Пароль невалиден' });
         if (isValidate) {
-          passwordValue = value
+          passwordValue = value;
         }
       },
     },
-  })
-  const loginFormInput = new FormInput({ input: loginInput })
-  const passwordFormInput = new FormInput({ input: passwordInput })
+  });
+  const loginFormInput = new FormInput({ input: loginInput });
+  const passwordFormInput = new FormInput({ input: passwordInput });
   const button = new Button({
     label: 'Войти',
     events: {
       click: (event: any) => {
-        event.preventDefault()
-        const isLoginValidate = validateLogin(loginValue)
+        event.preventDefault();
+        const isLoginValidate = validateLogin(loginValue);
         if (!isLoginValidate) {
-          loginFormInput.setProps({ error: 'Логин невалиден' })
+          loginFormInput.setProps({ error: 'Логин невалиден' });
         }
-        const isPasswordValidate = validatePassword(passwordValue)
+        const isPasswordValidate = validatePassword(passwordValue);
         if (!isPasswordValidate) {
-          passwordFormInput.setProps({ error: 'Пароль невалиден' })
+          passwordFormInput.setProps({ error: 'Пароль невалиден' });
         }
         if (isLoginValidate && isPasswordValidate) {
-          console.log({ login: loginValue, password: passwordValue })
+          console.log({ login: loginValue, password: passwordValue });
         }
       },
     },
-  })
-  const signInForm = new SignInForm({ loginInput: loginFormInput, passwordInput: passwordFormInput, button: button })
+  });
+  const signInForm = new SignInForm({
+    loginInput: loginFormInput,
+    passwordInput: passwordFormInput,
+    button,
+  });
   const form = new Form({
     children: signInForm,
-  })
-  const signIn = new SignIn({ form: form })
-  const center = new Center({ children: signIn })
+  });
+  const signIn = new SignIn({ form });
+  const center = new Center({ children: signIn });
 
-  render('#root', center)
-})
+  render('#root', center);
+});

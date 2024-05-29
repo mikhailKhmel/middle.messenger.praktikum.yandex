@@ -1,17 +1,17 @@
-import './contact.less'
-import contactTmpl from './contact.tmpl'
-import Block from '../../types/block'
+import './contact.less';
+import contactTmpl from './contact.tmpl';
+import Block from '../../types/block';
 
 interface IProps {
-  name: string
+  name: string;
 }
 
 export default class Contact extends Block {
   constructor(props: IProps) {
-    super('div', props)
+    super('div', props);
   }
 
   render(): DocumentFragment {
-    return this.compile(contactTmpl, this.props)
+    return this.compile(contactTmpl, this.props);
   }
 }

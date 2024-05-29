@@ -10,4 +10,4 @@ export default `
 {{{button}}}
 <a href="/pages/main/">Дальше</a>
 <a href="/pages/signup/">Создать аккаунт</a>
-`
+`;

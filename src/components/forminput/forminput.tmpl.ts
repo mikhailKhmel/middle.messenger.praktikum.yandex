@@ -3,4 +3,4 @@ export default `
 {{{input}}}
 <p class="error">{{error}}</p>
 </div>
-`
+`;

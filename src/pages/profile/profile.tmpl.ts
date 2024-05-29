@@ -46,4 +46,4 @@ export default `
         <a href="/pages/signin/">Выйти из профиля</a>
     </div>
 </div>
-`
+`;

@@ -5,4 +5,4 @@ export default `
     </div>
     <div class="contact-name">{{name}}</div>
 </div>
-`
+`;

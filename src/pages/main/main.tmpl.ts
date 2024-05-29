@@ -19,4 +19,4 @@ export default `
             {{{sendButton}}}
         </div>
     </div>
-</div>`
+</div>`;

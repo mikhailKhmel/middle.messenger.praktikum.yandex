@@ -1,18 +1,18 @@
-import Block, { Props } from '../../types/block'
-import './button-link.less'
-import buttonLinkTmpl from './button-link.tmpl'
+import Block, { Props } from '../../types/block';
+import './button-link.less';
+import buttonLinkTmpl from './button-link.tmpl';
 
 interface IProps extends Props {
-  href: string
-  label: string
+  href: string;
+  label: string;
 }
 
 export default class ButtonLink extends Block {
   constructor(props?: IProps) {
-    super('div', props)
+    super('div', props);
   }
 
   render(): DocumentFragment {
-    return this.compile(buttonLinkTmpl, this.props)
+    return this.compile(buttonLinkTmpl, this.props);
   }
 }
