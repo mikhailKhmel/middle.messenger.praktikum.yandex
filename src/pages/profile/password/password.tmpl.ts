@@ -6,7 +6,7 @@ export default `
         </a>
         <h2>Редактирование пароля</h2>
     </div>
-    <div class="container">
+    <div>
         <div class="profile-info">
             <div class="row">
                 <label for="oldPassword">Старый пароль</label>

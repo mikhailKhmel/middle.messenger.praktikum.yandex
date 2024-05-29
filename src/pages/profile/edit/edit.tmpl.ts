@@ -6,7 +6,7 @@ export default `
         </a>
         <h2>Редактирование профиля</h2>
     </div>
-    <div class="container">
+    <div>
         <div class="column">
             <div class="avatar">
                 <i class="bi bi-person-circle"></i>
@@ -29,7 +29,7 @@ export default `
             </div>
             <div class="row">
                 <label for="second_name">Фамилия</label>
-                {{{inputSecondname}}}
+                {{{inputLastname}}}
             </div>
             <div class="row">
                 <label for="display_name">Имя в чате</label>
