@@ -1,5 +1,4 @@
 import './signup.less'
-import ButtonLink from '../../components/button-link'
 import Input from '../../components/input'
 import Center from '../../components/center'
 import { render } from '../../utils/renderDOM'
