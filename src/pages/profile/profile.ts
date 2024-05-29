@@ -7,7 +7,7 @@ class Profile extends Block {
   constructor(props: Props) {
     super('div', props)
   }
-  render(): string {
+  render(): DocumentFragment {
     return this.compile(profileTmpl, this.props)
   }
 }

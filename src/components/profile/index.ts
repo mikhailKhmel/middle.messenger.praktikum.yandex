@@ -8,7 +8,7 @@ export default class Profile extends Block {
     super('section', props)
   }
 
-  render(): string {
+  render(): DocumentFragment {
     const template = Handlebars.compile(profileTmpl)
     return template(this.props)
   }

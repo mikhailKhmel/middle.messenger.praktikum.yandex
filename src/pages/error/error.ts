@@ -10,7 +10,7 @@ class Error extends Block {
     super('div', props)
   }
 
-  render(): string {
+  render(): DocumentFragment {
     return this.compile(errorTmpl, this.props)
   }
 }

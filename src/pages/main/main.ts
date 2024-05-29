@@ -21,7 +21,7 @@ class Main extends Block {
     super('div', props)
   }
 
-  render(): string {
+  render(): DocumentFragment {
     return this.compile(mainTmpl, this.props)
   }
 }

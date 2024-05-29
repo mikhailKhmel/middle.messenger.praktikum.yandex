@@ -13,7 +13,7 @@ class Notfound extends Block {
     super('div', props)
   }
 
-  render(): string {
+  render(): DocumentFragment {
       return this.compile(tmpl404, this.props)
   }
 }

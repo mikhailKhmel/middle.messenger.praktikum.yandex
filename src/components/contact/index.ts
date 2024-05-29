@@ -11,7 +11,7 @@ export default class Contact extends Block {
     super('div', props)
   }
 
-  render(): string {
+  render(): DocumentFragment {
     return this.compile(contactTmpl, this.props)
   }
 }

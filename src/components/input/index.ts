@@ -1,9 +1,8 @@
-import Block from '../../types/block'
+import Block, { Props } from '../../types/block'
 import './input.less'
 import inputTmpl from './input.tmpl'
-import Handlebars from 'handlebars'
 
-interface IProps {
+interface IProps extends Props {
   id: string
   name: string
   type: string
@@ -16,8 +15,7 @@ export default class Input extends Block {
     super('div', props)
   }
 
-  render(): string {
-    const template = Handlebars.compile(inputTmpl)
-    return template(this.props)
+  render(): DocumentFragment {
+    return this.compile(inputTmpl, this.props)
   }
 }

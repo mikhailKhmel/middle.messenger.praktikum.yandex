@@ -17,7 +17,7 @@ class Password extends Block {
     super('div', props)
   }
 
-  render(): string {
+  render(): DocumentFragment {
     return this.compile(passwordTmpl, this.props)
   }
 }

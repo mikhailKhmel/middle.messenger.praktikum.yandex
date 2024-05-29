@@ -72,20 +72,18 @@ export default class Block {
       propsAndStubs[key] = `<div data-id="${child._id}"></div>`
     })
 
-    const compiledTemplate = Handlebars.compile(template)
+    const compiledTemplate = Handlebars.compile(template.trim())
     const resultTemplate = compiledTemplate(propsAndStubs)
     const fragment = document.createElement('template')
     fragment.innerHTML = resultTemplate
 
     Object.values(this.children).forEach((child) => {
-      const selector = `[data-id="${child._id}"]`
-      const stub = fragment.content.querySelector(selector)!
+      const stub = fragment.content.querySelector(`[data-id="${child._id}"]`)
 
-      const content = child.getContent()
-      stub.outerHTML = content?.innerHTML || ''
+      stub?.replaceWith(child.getContent()!)
     })
 
-    return fragment.innerHTML
+    return fragment.content
   }
 
   private _componentDidMount(): void {
@@ -99,7 +97,8 @@ export default class Block {
     const { events = {} } = this.props
 
     Object.keys(events).forEach((eventName) => {
-      this._element!.addEventListener(eventName, events[eventName])
+      const e = this._element?.firstChild
+      e!.addEventListener(eventName, events[eventName])
     })
   }
 
@@ -141,18 +140,17 @@ export default class Block {
   }
 
   private _render(): void {
-    const block = this.render() // render теперь возвращает DocumentFragment
+    const block = this.render()! // render теперь возвращает DocumentFragment
 
     this._removeEvents()
-    this._element!.innerHTML = '' // удаляем предыдущее содержимое
-
-    this._element!.innerHTML = block
+    this._element!.innerHTML = ''
+    this._element?.appendChild(block)
 
     this._addEvents()
   }
 
-  render(): string {
-    return ''
+  render(): DocumentFragment | null {
+    return null
   }
 
   getContent(): HTMLElement | null {

@@ -13,7 +13,7 @@ export default class Message extends Block {
     super('section', props)
   }
 
-  render(): string {
+  render(): DocumentFragment {
     const template = Handlebars.compile(messageTmpl)
     return template(this.props)
   }

@@ -1,8 +1,8 @@
-import Block from '../../types/block'
+import Block, { Props } from '../../types/block'
 import './button-link.less'
 import buttonLinkTmpl from './button-link.tmpl'
 
-interface IProps {
+interface IProps extends Props {
   href: string
   label: string
 }
@@ -12,7 +12,7 @@ export default class ButtonLink extends Block {
     super('div', props)
   }
 
-  render(): string {
+  render(): DocumentFragment {
     return this.compile(buttonLinkTmpl, this.props)
   }
 }

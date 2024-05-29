@@ -1,17 +1,17 @@
 import Block, { Props } from '../../types/block'
-import centerTmpl from './center.tmpl'
-import './center.less'
+import formTmpl from './form.tmpl'
+import './form.less'
 
 interface IProps extends Props {
   children: Block
 }
 
-export default class Center extends Block {
+export default class Form extends Block {
   constructor(props: IProps) {
     super('div', props)
   }
 
   render(): DocumentFragment {
-    return this.compile(centerTmpl, this.props)
+    return this.compile(formTmpl, this.props)
   }
 }
