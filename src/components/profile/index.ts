@@ -1,5 +1,4 @@
 import './profile.less'
-import Handlebars from 'handlebars'
 import profileTmpl from './profile.tmpl'
 import Block, { Props } from '../../types/block'
 
@@ -9,7 +8,6 @@ export default class Profile extends Block {
   }
 
   render(): DocumentFragment {
-    const template = Handlebars.compile(profileTmpl)
-    return template(this.props)
+    return this.compile(profileTmpl, this.props)
   }
 }

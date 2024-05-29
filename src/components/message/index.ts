@@ -1,5 +1,4 @@
 import './message.less'
-import Handlebars from 'handlebars'
 import messageTmpl from './message.tmpl'
 import Block from '../../types/block'
 
@@ -14,7 +13,6 @@ export default class Message extends Block {
   }
 
   render(): DocumentFragment {
-    const template = Handlebars.compile(messageTmpl)
-    return template(this.props)
+    return this.compile(messageTmpl, this.props)
   }
 }

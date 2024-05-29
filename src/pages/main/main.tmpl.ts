@@ -16,9 +16,7 @@ export default `
         </div>
         <div class="message-input">
             {{{messageInput}}}
-            <button>
-                <i class="bi bi-send-fill"></i>
-            </button>
+            {{{sendButton}}}
         </div>
     </div>
 </div>`
