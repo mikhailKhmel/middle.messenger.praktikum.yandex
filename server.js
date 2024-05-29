@@ -4,11 +4,11 @@ const app = express()
 
 app.use(express.static('dist'))
 
-app.get('*', function (req, res) {
+app.get('*', (req, res) => {
   res.status(404).redirect('/pages/notfound/')
 })
 
-app.use((err, req, res, next) => {
+app.use((err, req, res) => {
   console.error(err.stack)
   res.status(500).redirect('/pages/error/')
 })
