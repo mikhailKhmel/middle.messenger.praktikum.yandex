@@ -14,10 +14,10 @@ class Notfound extends Block {
   }
 
   render(): DocumentFragment {
-      return this.compile(tmpl404, this.props)
+    return this.compile(tmpl404, this.props)
   }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  render('#root', new Notfound({img: notfoudImg}))
+  render('#root', new Notfound({ img: notfoudImg }))
 })

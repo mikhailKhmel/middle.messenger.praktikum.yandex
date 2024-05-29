@@ -6,7 +6,7 @@
     "es6": true
   },
   "rules": {
-    "semi": ["error", "always"],  // пример добавления кастомного правила
+    "semi": ["error", "always"], // пример добавления кастомного правила
     "quotes": ["error", "double"]
   },
   "parserOptions": {
