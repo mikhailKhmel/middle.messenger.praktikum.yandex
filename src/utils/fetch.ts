@@ -30,19 +30,22 @@ function queryStringify(data: Record<string, string>) {
 type OptionsWithoutMethod = { data?: any };
 // Этот тип эквивалентен следующему:
 // type OptionsWithoutMethod = { data?: any };
+type HTTPMethod = (url: string, options?: OptionsWithoutMethod) => Promise<unknown>;
 
 export class HTTPTransport {
-  get(url: string, options: OptionsWithoutMethod = {}): Promise<XMLHttpRequest> {
-    return this.request(url, { ...options, method: MethodEnum.GET });
-  }
+  get: HTTPMethod = (url, options = {}) =>
+    this.request(url, { ...options, method: MethodEnum.GET });
 
-  post = (url: string, options: OptionsWithoutMethod = {}) =>
-    this.request(url, { ...options, method: MethodEnum.POST });
-
-  put = (url: string, options: OptionsWithoutMethod = {}) =>
+  // используем тип и удаляем дублирование в аргументах
+  put: HTTPMethod = (url, options = {}) =>
     this.request(url, { ...options, method: MethodEnum.PUT });
 
-  delete = (url: string, options: OptionsWithoutMethod = {}) =>
+  // используем тип и удаляем дублирование в аргументах
+  post: HTTPMethod = (url, options = {}) =>
+    this.request(url, { ...options, method: MethodEnum.POST });
+
+  // используем тип и удаляем дублирование в аргументах
+  delete: HTTPMethod = (url, options = {}) =>
     this.request(url, { ...options, method: MethodEnum.DELETE });
 
   request(url: string, options: Options = { method: MethodEnum.GET }): Promise<XMLHttpRequest> {

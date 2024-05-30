@@ -1,5 +1,5 @@
 export default `
-<div class="container">
+<main class="container">
     <div class="header">
         {{{profile}}}
         <div class="contacts">
@@ -19,4 +19,4 @@ export default `
             {{{sendButton}}}
         </div>
     </div>
-</div>`;
+</main>`;

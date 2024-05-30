@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         const isLastnameValidate = validateName(lastname);
         if (!isLastnameValidate) {
-          lastnameFormInput.setProps({ error: 'Имя невалидно' });
+          secondnameFormInput.setProps({ error: 'Имя невалидно' });
         }
         const isPhoneValidate = validateLogin(phone);
         if (!isPhoneValidate) {
@@ -150,15 +150,15 @@ document.addEventListener('DOMContentLoaded', () => {
       },
     },
   });
-  const inputLastname = new Input({
-    id: 'last_name',
+  const inputSecondname = new Input({
+    id: 'second_name',
     type: 'text',
-    name: 'last_name',
+    name: 'second_name',
     events: {
       blur: (event: any) => {
         const { value } = event.target;
         const isValidate = validateName(value);
-        lastnameFormInput.setProps({ error: isValidate ? '' : 'Имя невалидно' });
+        secondnameFormInput.setProps({ error: isValidate ? '' : 'Имя невалидно' });
         if (isValidate) {
           lastname = value;
         }
@@ -214,7 +214,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const emailFormInput = new FormInput({ input: inputEmail });
   const loginFormInput = new FormInput({ input: inputLogin });
   const firstnameFormInput = new FormInput({ input: inputFirstname });
-  const lastnameFormInput = new FormInput({ input: inputLastname });
+  const secondnameFormInput = new FormInput({ input: inputSecondname });
   const phoneFormInput = new FormInput({ input: inputPhone });
   const firstPasswordFormInput = new FormInput({ input: inputFirstPassword });
   const secondPasswordFormInput = new FormInput({ input: inputSecondPassword });
@@ -223,7 +223,7 @@ document.addEventListener('DOMContentLoaded', () => {
     inputEmail: emailFormInput,
     inputLogin: loginFormInput,
     inputFirstname: firstnameFormInput,
-    inputLastname: lastnameFormInput,
+    inputLastname: secondnameFormInput,
     inputPhone: phoneFormInput,
     inputFirstPassword: firstPasswordFormInput,
     inputSecondPassword: secondPasswordFormInput,

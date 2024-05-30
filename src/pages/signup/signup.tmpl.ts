@@ -1,5 +1,5 @@
 export default `
-<div class="center">
+<main class="center">
     <div class="card">
         <h1 class="card-title">
             Регистрация
@@ -18,7 +18,7 @@ export default `
                 {{{inputFirstname}}}
             </div>
             <div class="card-form-row">
-                <label for="last_name">Фамилия</label>
+                <label for="second_name">Фамилия</label>
                 {{{inputLastname}}} 
             </div>
             <div class="card-form-row">
@@ -38,5 +38,5 @@ export default `
             <a href="/pages/signin/">Войти</a>
         </form>
     </div>
-</div>
+</main>
 `;

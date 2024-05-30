@@ -87,15 +87,15 @@ document.addEventListener('DOMContentLoaded', () => {
       },
     },
   });
-  const inputLastname = new Input({
-    id: 'last_name',
-    name: 'last_name',
+  const inputSecondname = new Input({
+    id: 'second_name',
+    name: 'second_name',
     type: 'text',
     events: {
       blur: (event: any) => {
         const { value } = event.target;
         const isValidate = validateName(value);
-        inputLastnameForm.setProps({ error: isValidate ? '' : 'Имя невалидно' });
+        inputSecondnameForm.setProps({ error: isValidate ? '' : 'Имя невалидно' });
         if (isValidate) {
           lastname = value;
         }
@@ -132,7 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const inputEmailForm = new FormInput({ input: inputEmail });
   const inputLoginForm = new FormInput({ input: inputLogin });
   const inputFirstnameForm = new FormInput({ input: inputFirstname });
-  const inputLastnameForm = new FormInput({ input: inputLastname });
+  const inputSecondnameForm = new FormInput({ input: inputSecondname });
   const inputDisplaynameForm = new FormInput({ input: inputDisplayname });
   const inputPhoneForm = new FormInput({ input: inputPhone });
   const saveButton = new Button({
@@ -169,7 +169,7 @@ document.addEventListener('DOMContentLoaded', () => {
     inputEmail: inputEmailForm,
     inputLogin: inputLoginForm,
     inputFirstname: inputFirstnameForm,
-    inputLastname: inputLastnameForm,
+    inputLastname: inputSecondnameForm,
     inputDisplayname: inputDisplaynameForm,
     inputPhone: inputPhoneForm,
     saveButton,

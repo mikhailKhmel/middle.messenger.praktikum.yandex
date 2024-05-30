@@ -1,5 +1,5 @@
 export default `
-<div>
+<main>
     <div class="header">
         <a class="back" href="/pages/main/">
             <i class="bi bi-arrow-left"></i>
@@ -45,5 +45,5 @@ export default `
         <a href="/pages/profile/password/">Изменить пароль</a><br>
         <a href="/pages/signin/">Выйти из профиля</a>
     </div>
-</div>
+</main>
 `;

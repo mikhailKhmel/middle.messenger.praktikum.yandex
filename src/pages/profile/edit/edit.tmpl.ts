@@ -1,5 +1,5 @@
 export default `
-<div>
+<main>
     <div class="header">
         <a class="back" href="/pages/profile/">
             <i class="bi bi-arrow-left"></i>
@@ -44,5 +44,5 @@ export default `
             </div>  
         </form>
     </div>
-</div>
+</main>
 `;
