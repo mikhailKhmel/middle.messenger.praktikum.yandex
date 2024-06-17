@@ -1,14 +1,11 @@
-import Contact from '../../components/contact';
 import FormInput from '../../components/forminput';
 import Input from '../../components/input';
-import Message from '../../components/message';
 import Profile from '../../components/profile';
 import SendButton from '../../components/send-button';
 import Block from '../../types/block';
-import getContacts from '../../utils/getContacts';
-import getMessages from '../../utils/getMessages';
 import './messenger.less';
 import mainTmpl from './messenger.tmpl.ts';
+import { ChatsApi } from '../../api/ChatsApi.ts';
 
 interface IProps {
   profile: Block;
@@ -25,12 +22,7 @@ export class Messenger extends Block {
 
   render(): DocumentFragment {
     let message: string = '';
-    const contacts = getContacts()
-      .map(
-        (x) => new Contact({ name: x.username }).element?.innerHTML || '',
-      );
-    const messages = getMessages()
-      .map((x) => new Message(x).element?.innerHTML || '');
+
     const messageInput = new Input({
       id: 'message',
       name: 'message',
@@ -51,12 +43,12 @@ export class Messenger extends Block {
         },
       },
     });
+    const messages = (new ChatsApi()).chats();
     this.props = {
       profile: new Profile().getContent()?.innerHTML,
-      contacts,
-      messages,
       messageInput: messageFormInput.getContent()?.innerHTML,
       sendButton: sendButton.getContent()?.innerHTML,
+      messages,
     };
     return this.compile(mainTmpl, this.props);
   }

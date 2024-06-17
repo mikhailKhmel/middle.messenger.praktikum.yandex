@@ -11,6 +11,8 @@ import {
 } from '../../utils/validation';
 import FormInput from '../../components/forminput';
 import Button from '../../components/button';
+import { AuthApi } from '../../api/AuthApi.ts';
+import { router } from '../../index.ts';
 
 interface IProps {
   inputEmail: Block;
@@ -39,7 +41,7 @@ export class SignUp extends Block {
     const button = new Button({
       label: 'Зарегистрироваться',
       events: {
-        click: (event: any) => {
+        click: async (event: any) => {
           event.preventDefault();
           const isEmailValidate = validateLogin(email);
           if (!isEmailValidate) {
@@ -85,6 +87,17 @@ export class SignUp extends Block {
             && isSecondPasswordValidate
             && isPasswordsEquel
           ) {
+            const response = await (new AuthApi()).signup({
+              email,
+              login,
+              first_name: firstname,
+              last_name: lastname,
+              phone,
+              password: firstpassword,
+            });
+            if (response) {
+              router.go('/messenger');
+            }
             console.log({
               email,
               login,

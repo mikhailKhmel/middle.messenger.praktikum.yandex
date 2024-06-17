@@ -7,6 +7,8 @@ import Form from '../../components/form';
 import SignInForm from '../../components/signinform';
 import FormInput from '../../components/forminput';
 import { validateLogin, validatePassword } from '../../utils/validation';
+import { AuthApi } from '../../api/AuthApi.ts';
+import { router } from '../../index.ts';
 
 export class SignIn extends Block {
   constructor(props: Props) {
@@ -52,7 +54,7 @@ export class SignIn extends Block {
     const button = new Button({
       label: 'Войти',
       events: {
-        click: (event: any) => {
+        click: async (event: any) => {
           event.preventDefault();
           const isLoginValidate = validateLogin(loginValue);
           if (!isLoginValidate) {
@@ -63,6 +65,13 @@ export class SignIn extends Block {
             passwordFormInput.setProps({ error: 'Пароль невалиден' });
           }
           if (isLoginValidate && isPasswordValidate) {
+            const response = await (new AuthApi()).signin({
+              login: loginValue,
+              password: passwordValue,
+            });
+            if (response) {
+              router.go('/messenger');
+            }
             console.log({
               login: loginValue,
               password: passwordValue,

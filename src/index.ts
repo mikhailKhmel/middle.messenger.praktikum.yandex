@@ -6,7 +6,7 @@ import { Profile } from './pages/profile/profile.ts';
 import { Settings } from './pages/settings/settings.ts';
 import { Password } from './pages/settings/password/password.ts';
 
-const router = new Router('#root');
+export const router = new Router('#root');
 router
   .use('/', SignIn)
   .use('/sign-up', SignUp)
