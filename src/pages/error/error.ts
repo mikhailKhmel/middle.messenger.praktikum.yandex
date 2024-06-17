@@ -3,7 +3,8 @@ import errorTmpl from './error.tmpl';
 import Block from '../../types/block';
 import { render } from '../../utils/renderDOM';
 
-interface IProps {}
+interface IProps {
+}
 
 class Error extends Block {
   constructor(props: IProps) {

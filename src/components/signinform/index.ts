@@ -7,6 +7,7 @@ interface IProps extends Props {
   passwordInput: Block;
   button: Block;
 }
+
 export default class SignInForm extends Block {
   constructor(props: IProps) {
     super('div', props);

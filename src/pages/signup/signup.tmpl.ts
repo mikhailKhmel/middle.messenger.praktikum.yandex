@@ -19,7 +19,7 @@ export default `
             </div>
             <div class="card-form-row">
                 <label for="second_name">Фамилия</label>
-                {{{inputLastname}}} 
+                {{{inputLastname}}}
             </div>
             <div class="card-form-row">
                 <label for="phone">Телефон</label>
@@ -34,8 +34,8 @@ export default `
                 {{{inputSecondPassword}}}
             </div>
             {{{button}}}
-            <a href="/pages/main/">Дальше</a>
-            <a href="/pages/signin/">Войти</a>
+            <a href="/messenger">Дальше</a>
+            <a href="/">Войти</a>
         </form>
     </div>
 </main>

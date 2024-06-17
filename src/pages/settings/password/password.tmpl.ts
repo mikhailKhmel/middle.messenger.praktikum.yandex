@@ -1,7 +1,7 @@
 export default `
 <main>
     <div class="header">
-        <a class="back" href="/pages/profile/">
+        <a class="back" href="/settings">
             <i class="bi bi-arrow-left"></i>
         </a>
         <h2>Редактирование пароля</h2>
@@ -24,7 +24,7 @@ export default `
         <hr>
         <div class="button-save">
             {{{saveButton}}}
-        </div>        
+        </div>
     </div>
 </main>
 `;

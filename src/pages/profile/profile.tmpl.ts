@@ -1,7 +1,7 @@
 export default `
 <main>
     <div class="header">
-        <a class="back" href="/pages/main/">
+        <a class="back" href="/messenger">
             <i class="bi bi-arrow-left"></i>
         </a>
         <h2>Мой профиль</h2>
@@ -41,9 +41,9 @@ export default `
             </div>
         </div>
         <hr>
-        <a href="/pages/profile/edit/">Изменить данные</a><br>
-        <a href="/pages/profile/password/">Изменить пароль</a><br>
-        <a href="/pages/signin/">Выйти из профиля</a>
+        <a href="/settings">Изменить данные</a><br>
+        <a href="/settings/password">Изменить пароль</a><br>
+        <a href="/">Выйти из профиля</a>
     </div>
 </main>
 `;

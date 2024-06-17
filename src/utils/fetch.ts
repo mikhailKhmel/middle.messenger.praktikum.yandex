@@ -34,30 +34,47 @@ type HTTPMethod = (url: string, options?: OptionsWithoutMethod) => Promise<unkno
 
 export class HTTPTransport {
   get: HTTPMethod = (url, options = {}) =>
-    this.request(url, { ...options, method: MethodEnum.GET });
+    this.request(url, {
+      ...options,
+      method: MethodEnum.GET,
+    });
 
   // используем тип и удаляем дублирование в аргументах
   put: HTTPMethod = (url, options = {}) =>
-    this.request(url, { ...options, method: MethodEnum.PUT });
+    this.request(url, {
+      ...options,
+      method: MethodEnum.PUT,
+    });
 
   // используем тип и удаляем дублирование в аргументах
   post: HTTPMethod = (url, options = {}) =>
-    this.request(url, { ...options, method: MethodEnum.POST });
+    this.request(url, {
+      ...options,
+      method: MethodEnum.POST,
+    });
 
   // используем тип и удаляем дублирование в аргументах
   delete: HTTPMethod = (url, options = {}) =>
-    this.request(url, { ...options, method: MethodEnum.DELETE });
+    this.request(url, {
+      ...options,
+      method: MethodEnum.DELETE,
+    });
 
   request(url: string, options: Options = { method: MethodEnum.GET }): Promise<XMLHttpRequest> {
-    const { headers, method, data } = options;
+    const {
+      headers,
+      method,
+      data,
+    } = options;
 
     return new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
       const isGet = method === MethodEnum.GET;
       xhr.open(method, isGet && !!data ? `${url}${queryStringify(data)}` : url);
-      Object.keys(headers).forEach((key) => {
-        xhr.setRequestHeader(key, headers[key]);
-      });
+      Object.keys(headers)
+        .forEach((key) => {
+          xhr.setRequestHeader(key, headers[key]);
+        });
       xhr.onload = () => {
         resolve(xhr);
       };
