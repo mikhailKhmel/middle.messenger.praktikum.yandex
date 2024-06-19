@@ -1,7 +1,7 @@
 import './signin.less';
 import signinTmpl from './signin.tmpl';
 import Input from '../../components/input';
-import Block, { Props } from '../../types/block';
+import Block, { Props } from '../../types/Block.ts';
 import Button from '../../components/button';
 import Form from '../../components/form';
 import SignInForm from '../../components/signinform';
@@ -16,21 +16,16 @@ export class SignIn extends Block {
   }
 
   render(): DocumentFragment {
-    let loginValue: string;
-    let passwordValue: string;
-
     const loginInput = new Input({
       id: 'login',
       type: 'text',
       name: 'login',
       events: {
-        blur: (event: any) => {
+        blur: (event: Event) => {
+          if (!(event.target instanceof HTMLInputElement)) return;
           const { value } = event.target;
           const isValidate = validateLogin(value);
           loginFormInput.setProps({ error: isValidate ? '' : 'Логин невалиден' });
-          if (isValidate) {
-            loginValue = value;
-          }
         },
       },
     });
@@ -39,13 +34,11 @@ export class SignIn extends Block {
       type: 'password',
       name: 'password',
       events: {
-        blur: (event: any) => {
+        blur: (event: Event) => {
+          if (!(event.target instanceof HTMLInputElement)) return;
           const { value } = event.target;
           const isValidate = validatePassword(value);
           passwordFormInput.setProps({ error: isValidate ? '' : 'Пароль невалиден' });
-          if (isValidate) {
-            passwordValue = value;
-          }
         },
       },
     });
@@ -53,32 +46,7 @@ export class SignIn extends Block {
     const passwordFormInput = new FormInput({ input: passwordInput });
     const button = new Button({
       label: 'Войти',
-      events: {
-        click: async (event: any) => {
-          event.preventDefault();
-          const isLoginValidate = validateLogin(loginValue);
-          if (!isLoginValidate) {
-            loginFormInput.setProps({ error: 'Логин невалиден' });
-          }
-          const isPasswordValidate = validatePassword(passwordValue);
-          if (!isPasswordValidate) {
-            passwordFormInput.setProps({ error: 'Пароль невалиден' });
-          }
-          if (isLoginValidate && isPasswordValidate) {
-            const response = await (new AuthApi()).signin({
-              login: loginValue,
-              password: passwordValue,
-            });
-            if (response) {
-              router.go('/messenger');
-            }
-            console.log({
-              login: loginValue,
-              password: passwordValue,
-            });
-          }
-        },
-      },
+
     });
     const signInForm = new SignInForm({
       loginInput: loginFormInput,
@@ -87,8 +55,47 @@ export class SignIn extends Block {
     });
     const form = new Form({
       children: signInForm,
-    });
+      events: {
+        submit: async (event: Event) => {
+          event.preventDefault();
+          if (!(event.target instanceof HTMLFormElement)) return;
+          const formData = new FormData(event.target);
+          const login = formData.get('login')
+            ?.toString() ?? '';
+          const password = formData.get('password')
+            ?.toString() ?? '';
+          const isLoginValidate = validateLogin(login);
+          if (!isLoginValidate) {
+            loginFormInput.setProps({ error: 'Логин невалиден' });
+          }
+          const isPasswordValidate = validatePassword(password);
+          if (!isPasswordValidate) {
+            passwordFormInput.setProps({ error: 'Пароль невалиден' });
+          }
 
-    return this.compile(signinTmpl, { form: form.getContent()?.innerHTML });
+          if (isLoginValidate && isPasswordValidate) {
+            try {
+              const response = await (new AuthApi()).signin({
+                login,
+                password,
+              });
+              if (response) {
+                router.go('/messenger');
+              }
+              console.log({
+                login,
+                password,
+              });
+            } catch (error: unknown) {
+              console.error(error);
+            }
+          }
+        },
+      },
+    });
+    this.children = {
+      form,
+    };
+    return this.compile(signinTmpl, {});
   }
 }

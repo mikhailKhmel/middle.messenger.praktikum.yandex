@@ -1,4 +1,4 @@
-import Block, { Props } from '../../types/block';
+import Block, { Props } from '../../types/Block.ts';
 import './forminput.less';
 import forminputTmpl from './forminput.tmpl';
 

@@ -20,4 +20,4 @@
 
 ## Ссылка на опубликованный проект
 
-https://messenger-mikhailkhmel.netlify.app/
+https://mikhailkhmel-messenger.netlify.app/

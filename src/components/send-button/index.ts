@@ -1,6 +1,6 @@
 import './send-button.less';
 import sendButtonTmpl from './send-button.tmpl';
-import Block, { Props } from '../../types/block';
+import Block, { Props } from '../../types/Block.ts';
 
 interface IProps extends Props {
 }

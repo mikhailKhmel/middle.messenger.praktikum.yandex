@@ -1,45 +1,24 @@
 import Button from '../../components/button';
 import FormInput from '../../components/forminput';
 import Input from '../../components/input';
-import Block from '../../types/block.ts';
+import Block, { Props } from '../../types/Block.ts';
 import {
-  validateEmail,
-  validateLogin,
-  validateName,
-  validatePhone,
+  validateEmail, validateLogin, validateName, validatePhone,
 } from '../../utils/validation.ts';
 import './settings.less';
 import editTmpl from './settings.tmpl.ts';
-
-interface IProps {
-  inputAvatar: Block;
-  inputEmail: Block;
-  inputLogin: Block;
-  inputFirstname: Block;
-  inputLastname: Block;
-  inputDisplayname: Block;
-  inputPhone: Block;
-  saveButton: Block;
-}
+import Settingsform from '../../components/settingsform';
+import Form from '../../components/form';
+import { UserApi } from '../../api/UserApi.ts';
+import { router } from '../../index.ts';
+import Avatarform from '../../components/avatarform';
 
 export class Settings extends Block {
-  constructor(props: IProps) {
+  constructor(props: Props) {
     super('div', props);
   }
 
   render(): DocumentFragment {
-    let email: string;
-    let login: string;
-    let firstname: string;
-    let lastname: string;
-    let displayname: string;
-    let phone: string;
-
-    const inputAvatar = new Input({
-      id: 'avatar',
-      name: 'avatar',
-      type: 'file',
-    });
     const inputEmail = new Input({
       id: 'email',
       name: 'email',
@@ -49,9 +28,6 @@ export class Settings extends Block {
           const { value } = event.target;
           const isValidate = validateEmail(value);
           inputEmailForm.setProps({ error: isValidate ? '' : 'Email невалиден' });
-          if (isValidate) {
-            email = value;
-          }
         },
       },
     });
@@ -64,9 +40,6 @@ export class Settings extends Block {
           const { value } = event.target;
           const isValidate = validateLogin(value);
           inputLoginForm.setProps({ error: isValidate ? '' : 'Логин невалиден' });
-          if (isValidate) {
-            login = value;
-          }
         },
       },
     });
@@ -79,9 +52,6 @@ export class Settings extends Block {
           const { value } = event.target;
           const isValidate = validateName(value);
           inputFirstnameForm.setProps({ error: isValidate ? '' : 'Имя невалидно' });
-          if (isValidate) {
-            firstname = value;
-          }
         },
       },
     });
@@ -94,9 +64,6 @@ export class Settings extends Block {
           const { value } = event.target;
           const isValidate = validateName(value);
           inputSecondnameForm.setProps({ error: isValidate ? '' : 'Имя невалидно' });
-          if (isValidate) {
-            lastname = value;
-          }
         },
       },
     });
@@ -104,12 +71,6 @@ export class Settings extends Block {
       id: 'display_name',
       name: 'display_name',
       type: 'text',
-      events: {
-        blur: (event: any) => {
-          const { value } = event.target;
-          displayname = value;
-        },
-      },
     });
     const inputPhone = new Input({
       id: 'phone',
@@ -120,9 +81,6 @@ export class Settings extends Block {
           const { value } = event.target;
           const isValidate = validatePhone(value);
           inputPhoneForm.setProps({ error: isValidate ? '' : 'Номер телефона невалиден' });
-          if (isValidate) {
-            phone = value;
-          }
         },
       },
     });
@@ -135,9 +93,36 @@ export class Settings extends Block {
     const inputPhoneForm = new FormInput({ input: inputPhone });
     const saveButton = new Button({
       label: 'Сохранить',
+    });
+    const settingsForm = new Settingsform({
+      inputEmail: inputEmailForm,
+      inputLogin: inputLoginForm,
+      inputFirstname: inputFirstnameForm,
+      inputLastname: inputSecondnameForm,
+      inputDisplayname: inputDisplaynameForm,
+      inputPhone: inputPhoneForm,
+      saveButton,
+    });
+    const form = new Form({
+      children: settingsForm,
       events: {
-        click: (event: any) => {
-          event?.preventDefault();
+        submit: async (event: Event) => {
+          event.preventDefault();
+          if (!(event.target instanceof HTMLFormElement)) return;
+          const formData = new FormData(event.target);
+          const email = formData.get('email')
+            ?.toString() ?? '';
+          const login = formData.get('login')
+            ?.toString() ?? '';
+          const firstname = formData.get('first_name')
+            ?.toString() ?? '';
+          const lastname = formData.get('last_name')
+            ?.toString() ?? '';
+          const displayname = formData.get('display_name')
+            ?.toString() ?? '';
+          const phone = formData.get('phone')
+            ?.toString() ?? '';
+
           const emailValidate = validateEmail(email);
           const loginValidate = validateLogin(login);
           const firstnameValidate = validateName(firstname);
@@ -150,28 +135,54 @@ export class Settings extends Block {
             && lastnameValidate
             && phoneValidate
           ) {
-            console.log({
-              email,
-              login,
-              firstname,
-              lastname,
-              displayname,
-              phone,
-            });
+            try {
+              const res = await (new UserApi().update({
+                first_name: firstname,
+                last_name: lastname,
+                login,
+                email,
+                phone,
+                display_name: displayname,
+              }));
+              if (res) {
+                router.back();
+              }
+              console.log({
+                email,
+                login,
+                firstname,
+                lastname,
+                displayname,
+                phone,
+              });
+            } catch (error: unknown) {
+              console.error(error);
+            }
           }
         },
       },
     });
-    this.props = {
-      inputAvatar: inputAvatar.getContent()?.innerHTML,
-      inputEmail: inputEmailForm.getContent()?.innerHTML,
-      inputLogin: inputLoginForm.getContent()?.innerHTML,
-      inputFirstname: inputFirstnameForm.getContent()?.innerHTML,
-      inputLastname: inputSecondnameForm.getContent()?.innerHTML,
-      inputDisplayname: inputDisplaynameForm.getContent()?.innerHTML,
-      inputPhone: inputPhoneForm.getContent()?.innerHTML,
-      saveButton: saveButton.getContent()?.innerHTML,
+    const avatarForm = new Form({
+      children: new Avatarform(),
+      events: {
+        submit: async (event: Event) => {
+          event.preventDefault();
+          if (!(event.target instanceof HTMLFormElement)) return;
+          const formData = new FormData(event.target);
+          const avatar = formData.get('avatar') as File;
+          try {
+            await (new UserApi().updateAvatar({ avatar }));
+            router.back();
+          } catch (error: unknown) {
+            console.error(error);
+          }
+        },
+      },
+    });
+    this.children = {
+      form,
+      avatarForm,
     };
-    return this.compile(editTmpl, this.props);
+    return this.compile(editTmpl, {});
   }
 }

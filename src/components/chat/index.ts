@@ -1,12 +1,12 @@
-import './contact.less';
-import contactTmpl from './contact.tmpl';
-import Block from '../../types/block';
+import './chat.less';
+import contactTmpl from './chat.tmpl.ts';
+import Block from '../../types/Block.ts';
 
 interface IProps {
   name: string;
 }
 
-export default class Contact extends Block {
+export default class Chat extends Block {
   constructor(props: IProps) {
     super('div', props);
   }

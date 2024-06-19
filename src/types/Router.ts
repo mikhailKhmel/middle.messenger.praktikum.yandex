@@ -1,8 +1,10 @@
-import Block from '../types/block';
-import Route from './route';
-import { Class } from '../types/class.ts';
+import Block from './Block.ts';
+import Route from './Route.ts';
+import { Class } from './Class.ts';
 
 export class Router {
+  static __instance: Router | undefined;
+
   _rootQuery: string | undefined;
 
   routes: Route[] | undefined;
@@ -10,8 +12,6 @@ export class Router {
   history: History | undefined;
 
   _currentRoute: Route | null | undefined;
-
-  static __instance: Router | undefined;
 
   _historyIndex: number | undefined;
 
@@ -61,6 +61,10 @@ export class Router {
     this.history?.pushState({}, '', pathname);
     this._historyIndex!++;
     this._onRoute(pathname);
+  }
+
+  refresh() {
+    window.location.href = document.referrer;
   }
 
   back() {

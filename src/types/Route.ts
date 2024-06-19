@@ -1,7 +1,7 @@
-import Block from '../types/block';
-import { isEqual } from './isEqual';
-import { render } from './renderDOM';
-import { Class } from '../types/class.ts';
+import Block from './Block.ts';
+import { isEqual } from '../utils/isEqual.ts';
+import { render } from '../utils/renderDOM.ts';
+import { Class } from './Class.ts';
 
 export default class Route {
   _pathname: string;

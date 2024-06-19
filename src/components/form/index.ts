@@ -1,13 +1,9 @@
-import Block, { Props } from '../../types/block';
+import Block, { Props } from '../../types/Block.ts';
 import formTmpl from './form.tmpl';
 import './form.less';
 
-interface IProps extends Props {
-  children: Block;
-}
-
 export default class Form extends Block {
-  constructor(props: IProps) {
+  constructor(props: Props) {
     super('div', props);
   }
 

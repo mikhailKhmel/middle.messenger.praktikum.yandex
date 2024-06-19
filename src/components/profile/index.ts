@@ -1,6 +1,6 @@
 import './profile.less';
 import profileTmpl from './profile.tmpl';
-import Block, { Props } from '../../types/block';
+import Block, { Props } from '../../types/Block.ts';
 
 export default class Profile extends Block {
   constructor(props?: Props) {

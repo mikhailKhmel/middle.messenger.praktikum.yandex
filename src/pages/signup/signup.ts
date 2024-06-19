@@ -1,49 +1,158 @@
 import './signup.less';
 import Input from '../../components/input';
-import Block from '../../types/block';
+import Block, { Props } from '../../types/Block.ts';
 import signupTmpl from './signup.tmpl';
 import {
-  validateEmail,
-  validateLogin,
-  validateName,
-  validatePassword,
-  validatePhone,
+  validateEmail, validateLogin, validateName, validatePassword, validatePhone,
 } from '../../utils/validation';
 import FormInput from '../../components/forminput';
 import Button from '../../components/button';
 import { AuthApi } from '../../api/AuthApi.ts';
 import { router } from '../../index.ts';
-
-interface IProps {
-  inputEmail: Block;
-  inputLogin: Block;
-  inputFirstname: Block;
-  inputLastname: Block;
-  inputPhone: Block;
-  inputFirstPassword: Block;
-  inputSecondPassword: Block;
-  button: Block;
-}
+import Form from '../../components/form';
+import SignUpForm from '../../components/signupform';
 
 export class SignUp extends Block {
-  constructor(props: IProps) {
+  constructor(props: Props) {
     super('div', props);
   }
 
   render(): DocumentFragment {
-    let email: string;
-    let login: string;
-    let firstname: string;
-    let lastname: string;
-    let phone: string;
-    let firstpassword: string;
-    let secondpassword: string;
     const button = new Button({
       label: 'Зарегистрироваться',
+
+    });
+    const inputEmail = new Input({
+      id: 'email',
+      type: 'text',
+      name: 'email',
       events: {
-        click: async (event: any) => {
+        blur: (event: Event) => {
+          if (!(event.target instanceof HTMLInputElement)) return;
+
+          const { value } = event.target;
+          const isValidate = validateEmail(value);
+          emailFormInput.setProps({ error: isValidate ? '' : 'Email невалиден' });
+        },
+      },
+    });
+    const inputLogin = new Input({
+      id: 'login',
+      type: 'text',
+      name: 'login',
+      events: {
+        blur: (event: Event) => {
+          if (!(event.target instanceof HTMLInputElement)) return;
+
+          const { value } = event.target;
+          const isValidate = validateLogin(value);
+          loginFormInput.setProps({ error: isValidate ? '' : 'Логин невалиден' });
+        },
+      },
+    });
+    const inputFirstname = new Input({
+      id: 'first_name',
+      type: 'text',
+      name: 'first_name',
+      events: {
+        blur: (event: Event) => {
+          if (!(event.target instanceof HTMLInputElement)) return;
+
+          const { value } = event.target;
+          const isValidate = validateName(value);
+          firstnameFormInput.setProps({ error: isValidate ? '' : 'Имя невалидно' });
+        },
+      },
+    });
+    const inputSecondname = new Input({
+      id: 'last_name',
+      type: 'text',
+      name: 'last_name',
+      events: {
+        blur: (event: Event) => {
+          if (!(event.target instanceof HTMLInputElement)) return;
+
+          const { value } = event.target;
+          const isValidate = validateName(value);
+          secondnameFormInput.setProps({ error: isValidate ? '' : 'Имя невалидно' });
+        },
+      },
+    });
+    const inputPhone = new Input({
+      id: 'phone',
+      type: 'phone',
+      name: 'phone',
+      events: {
+        blur: (event: Event) => {
+          if (!(event.target instanceof HTMLInputElement)) return;
+
+          const { value } = event.target;
+          const isValidate = validatePhone(value);
+          phoneFormInput.setProps({ error: isValidate ? '' : 'Номер телефона невалиден' });
+        },
+      },
+    });
+    const inputFirstPassword = new Input({
+      id: 'password',
+      type: 'password',
+      name: 'first_password',
+      events: {
+        blur: (event: Event) => {
+          if (!(event.target instanceof HTMLInputElement)) return;
+
+          const { value } = event.target;
+          const isValidate = validatePassword(value);
+          firstPasswordFormInput.setProps({ error: isValidate ? '' : 'Пароль невалиден' });
+        },
+      },
+    });
+    const inputSecondPassword = new Input({
+      id: 'password',
+      type: 'password',
+      name: 'last_password',
+      events: {
+        blur: (event: Event) => {
+          if (!(event.target instanceof HTMLInputElement)) return;
+
+          const { value } = event.target;
+          const isValidate = validatePassword(value);
+          secondPasswordFormInput.setProps({ error: isValidate ? '' : 'Пароль невалиден' });
+        },
+      },
+    });
+
+    const emailFormInput = new FormInput({ input: inputEmail });
+    const loginFormInput = new FormInput({ input: inputLogin });
+    const firstnameFormInput = new FormInput({ input: inputFirstname });
+    const secondnameFormInput = new FormInput({ input: inputSecondname });
+    const phoneFormInput = new FormInput({ input: inputPhone });
+    const firstPasswordFormInput = new FormInput({ input: inputFirstPassword });
+    const secondPasswordFormInput = new FormInput({ input: inputSecondPassword });
+    const signUpForm = new SignUpForm({
+      inputEmail: emailFormInput,
+      inputLogin: loginFormInput,
+      inputFirstname: firstnameFormInput,
+      inputLastname: secondnameFormInput,
+      inputPhone: phoneFormInput,
+      inputFirstPassword: firstPasswordFormInput,
+      inputSecondPassword: secondPasswordFormInput,
+      button,
+    });
+    const form = new Form({
+      children: signUpForm,
+      events: {
+        submit: async (event: Event) => {
           event.preventDefault();
-          const isEmailValidate = validateLogin(email);
+          if (!(event.target instanceof HTMLFormElement)) return;
+          const formData = new FormData(event.target);
+          const email = formData.get('email')?.toString() ?? '';
+          const login = formData.get('login')?.toString() ?? '';
+          const firstname = formData.get('first_name')?.toString() ?? '';
+          const lastname = formData.get('last_name')?.toString() ?? '';
+          const phone = formData.get('phone')?.toString() ?? '';
+          const firstpassword = formData.get('first_password')?.toString() ?? '';
+          const secondpassword = formData.get('last_password')?.toString() ?? '';
+          const isEmailValidate = validateEmail(email);
           if (!isEmailValidate) {
             emailFormInput.setProps({ error: 'Email невалиден' });
           }
@@ -59,15 +168,15 @@ export class SignUp extends Block {
           if (!isLastnameValidate) {
             secondnameFormInput.setProps({ error: 'Имя невалидно' });
           }
-          const isPhoneValidate = validateLogin(phone);
+          const isPhoneValidate = validatePhone(phone);
           if (!isPhoneValidate) {
             phoneFormInput.setProps({ error: 'Номер невалиден' });
           }
-          const isFirstPasswordValidate = validateName(firstpassword);
+          const isFirstPasswordValidate = validatePassword(firstpassword);
           if (!isFirstPasswordValidate) {
             firstPasswordFormInput.setProps({ error: 'Пароль невалиден' });
           }
-          const isSecondPasswordValidate = validateName(secondpassword);
+          const isSecondPasswordValidate = validatePassword(secondpassword);
           if (!isSecondPasswordValidate) {
             secondPasswordFormInput.setProps({ error: 'Пароль невалиден' });
           }
@@ -87,152 +196,34 @@ export class SignUp extends Block {
             && isSecondPasswordValidate
             && isPasswordsEquel
           ) {
-            const response = await (new AuthApi()).signup({
-              email,
-              login,
-              first_name: firstname,
-              last_name: lastname,
-              phone,
-              password: firstpassword,
-            });
-            if (response) {
-              router.go('/messenger');
+            try {
+              const response = await (new AuthApi()).signup({
+                email,
+                login,
+                first_name: firstname,
+                second_name: lastname,
+                phone,
+                password: firstpassword,
+              });
+              if (response) {
+                router.go('/messenger');
+              }
+              console.log({
+                email,
+                login,
+                firstname,
+                lastname,
+                phone,
+                password: firstpassword,
+              });
+            } catch (error: unknown) {
+              console.error(error);
             }
-            console.log({
-              email,
-              login,
-              firstname,
-              lastname,
-              phone,
-              password: firstpassword,
-            });
           }
         },
       },
     });
-    const inputEmail = new Input({
-      id: 'email',
-      type: 'text',
-      name: 'email',
-      events: {
-        blur: (event: any) => {
-          const { value } = event.target;
-          const isValidate = validateEmail(value);
-          emailFormInput.setProps({ error: isValidate ? '' : 'Email невалиден' });
-          if (isValidate) {
-            email = value;
-          }
-        },
-      },
-    });
-    const inputLogin = new Input({
-      id: 'login',
-      type: 'text',
-      name: 'login',
-      events: {
-        blur: (event: any) => {
-          const { value } = event.target;
-          const isValidate = validateLogin(value);
-          loginFormInput.setProps({ error: isValidate ? '' : 'Логин невалиден' });
-          if (isValidate) {
-            login = value;
-          }
-        },
-      },
-    });
-    const inputFirstname = new Input({
-      id: 'first_name',
-      type: 'text',
-      name: 'first_name',
-      events: {
-        blur: (event: any) => {
-          const { value } = event.target;
-          const isValidate = validateName(value);
-          firstnameFormInput.setProps({ error: isValidate ? '' : 'Имя невалидно' });
-          if (isValidate) {
-            firstname = value;
-          }
-        },
-      },
-    });
-    const inputSecondname = new Input({
-      id: 'second_name',
-      type: 'text',
-      name: 'second_name',
-      events: {
-        blur: (event: any) => {
-          const { value } = event.target;
-          const isValidate = validateName(value);
-          secondnameFormInput.setProps({ error: isValidate ? '' : 'Имя невалидно' });
-          if (isValidate) {
-            lastname = value;
-          }
-        },
-      },
-    });
-    const inputPhone = new Input({
-      id: 'phone',
-      type: 'phone',
-      name: 'phone',
-      events: {
-        blur: (event: any) => {
-          const { value } = event.target;
-          const isValidate = validatePhone(value);
-          phoneFormInput.setProps({ error: isValidate ? '' : 'Номер телефона невалиден' });
-          if (isValidate) {
-            phone = value;
-          }
-        },
-      },
-    });
-    const inputFirstPassword = new Input({
-      id: 'password',
-      type: 'password',
-      name: 'password',
-      events: {
-        blur: (event: any) => {
-          const { value } = event.target;
-          const isValidate = validatePassword(value);
-          firstPasswordFormInput.setProps({ error: isValidate ? '' : 'Пароль невалиден' });
-          if (isValidate) {
-            firstpassword = value;
-          }
-        },
-      },
-    });
-    const inputSecondPassword = new Input({
-      id: 'password',
-      type: 'password',
-      name: 'password',
-      events: {
-        blur: (event: any) => {
-          const { value } = event.target;
-          const isValidate = validatePassword(value);
-          secondPasswordFormInput.setProps({ error: isValidate ? '' : 'Пароль невалиден' });
-          if (isValidate) {
-            secondpassword = value;
-          }
-        },
-      },
-    });
-
-    const emailFormInput = new FormInput({ input: inputEmail });
-    const loginFormInput = new FormInput({ input: inputLogin });
-    const firstnameFormInput = new FormInput({ input: inputFirstname });
-    const secondnameFormInput = new FormInput({ input: inputSecondname });
-    const phoneFormInput = new FormInput({ input: inputPhone });
-    const firstPasswordFormInput = new FormInput({ input: inputFirstPassword });
-    const secondPasswordFormInput = new FormInput({ input: inputSecondPassword });
-    this.props = {
-      inputEmail: emailFormInput.getContent()?.innerHTML,
-      inputLogin: loginFormInput.getContent()?.innerHTML,
-      inputFirstname: firstnameFormInput.getContent()?.innerHTML,
-      inputLastname: secondnameFormInput.getContent()?.innerHTML,
-      inputPhone: phoneFormInput.getContent()?.innerHTML,
-      inputFirstPassword: firstPasswordFormInput.getContent()?.innerHTML,
-      inputSecondPassword: secondnameFormInput.getContent()?.innerText,
-      button: button.getContent()?.innerText,
-    };
-    return this.compile(signupTmpl, this.props);
+    this.children = { form };
+    return this.compile(signupTmpl, {});
   }
 }

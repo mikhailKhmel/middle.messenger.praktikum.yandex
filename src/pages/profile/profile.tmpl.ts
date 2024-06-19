@@ -43,7 +43,7 @@ export default `
         <hr>
         <a href="/settings">Изменить данные</a><br>
         <a href="/settings/password">Изменить пароль</a><br>
-        <a href="/">Выйти из профиля</a>
+        {{{logoutButton}}}
     </div>
 </main>
 `;

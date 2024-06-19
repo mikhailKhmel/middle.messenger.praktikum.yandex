@@ -27,10 +27,10 @@ function queryStringify(data: Record<string, string>) {
 
 // Тип Omit принимает два аргумента: первый — тип, второй — строка
 // и удаляет из первого типа ключ, переданный вторым аргументом
-type OptionsWithoutMethod = { data?: any };
+type OptionsWithoutMethod = { data?: any, headers?: any };
 // Этот тип эквивалентен следующему:
 // type OptionsWithoutMethod = { data?: any };
-type HTTPMethod = (url: string, options?: OptionsWithoutMethod) => Promise<unknown>;
+type HTTPMethod = (url: string, options?: OptionsWithoutMethod) => Promise<XMLHttpRequest>;
 
 export class HTTPTransport {
   get: HTTPMethod = (url, options = {}) =>
@@ -71,7 +71,7 @@ export class HTTPTransport {
       const xhr = new XMLHttpRequest();
       const isGet = method === MethodEnum.GET;
       xhr.open(method, isGet && !!data ? `${url}${queryStringify(data)}` : url);
-      Object.keys(headers)
+      Object.keys(headers ?? {})
         .forEach((key) => {
           xhr.setRequestHeader(key, headers[key]);
         });
@@ -82,11 +82,12 @@ export class HTTPTransport {
       xhr.onabort = reject;
       xhr.onerror = reject;
       xhr.ontimeout = reject;
+      xhr.withCredentials = true;
 
       if (method === MethodEnum.GET || !data) {
         xhr.send();
       } else {
-        xhr.send(data);
+        xhr.send(JSON.stringify(data));
       }
     });
   }

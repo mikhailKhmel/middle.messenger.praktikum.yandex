@@ -1,7 +1,7 @@
 import './notfound.less';
 import tmpl404 from './notfound.tmpl';
 import notfoudImg from '../../assets/tumbleweed.gif';
-import Block from '../../types/block';
+import Block from '../../types/Block.ts';
 import { render } from '../../utils/renderDOM';
 
 interface IProps {

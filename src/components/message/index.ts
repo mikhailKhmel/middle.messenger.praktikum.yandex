@@ -1,6 +1,6 @@
 import './message.less';
 import messageTmpl from './message.tmpl';
-import Block from '../../types/block';
+import Block from '../../types/Block.ts';
 
 interface IProps {
   message: string;

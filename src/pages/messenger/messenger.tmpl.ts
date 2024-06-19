@@ -2,11 +2,13 @@ export default `
 <main class="container">
     <div class="header">
         {{{profile}}}
-        <div class="contacts">
-            {{#each contacts}}
+        {{{addChatButton}}}
+        <div class="chats">
+            {{#each chats}}
                 {{{.}}}
             {{/each}}
         </div>
+
     </div>
     <div class="chat">
         <div class="messages">

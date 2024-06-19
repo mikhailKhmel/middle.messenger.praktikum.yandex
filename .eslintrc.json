@@ -5,6 +5,7 @@
     "@typescript-eslint"
   ],
   "rules": {
+    "max-classes-per-file": "off",
     "prefer-regex-literals": "off",
     "import/no-extraneous-dependencies": "off",
     "no-undef": "off",

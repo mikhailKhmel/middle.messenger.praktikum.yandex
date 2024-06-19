@@ -2,10 +2,13 @@ import FormInput from '../../components/forminput';
 import Input from '../../components/input';
 import Profile from '../../components/profile';
 import SendButton from '../../components/send-button';
-import Block from '../../types/block';
+import Block, { Props } from '../../types/Block.ts';
 import './messenger.less';
 import mainTmpl from './messenger.tmpl.ts';
 import { ChatsApi } from '../../api/ChatsApi.ts';
+import AddChatButton from '../../components/add-chat-button';
+import { ChatType } from '../../types/ChatType.ts';
+import Chat from '../../components/chat';
 
 interface IProps {
   profile: Block;
@@ -20,9 +23,15 @@ export class Messenger extends Block {
     super('div', props);
   }
 
+  componentDidMount(_oldProps?: Props) {
+    super.componentDidMount(_oldProps);
+    new ChatsApi().chats()
+      .then((res) => this.setProps({ chats: res.map((x: ChatType) => new Chat({ name: x.title }).getContent()?.outerHTML) }));
+  }
+
   render(): DocumentFragment {
     let message: string = '';
-
+    const addChatButton = new AddChatButton({});
     const messageInput = new Input({
       id: 'message',
       name: 'message',
@@ -43,12 +52,12 @@ export class Messenger extends Block {
         },
       },
     });
-    const messages = (new ChatsApi()).chats();
-    this.props = {
-      profile: new Profile().getContent()?.innerHTML,
-      messageInput: messageFormInput.getContent()?.innerHTML,
-      sendButton: sendButton.getContent()?.innerHTML,
-      messages,
+
+    this.children = {
+      addChatButton,
+      profile: new Profile(),
+      messageInput: messageFormInput,
+      sendButton,
     };
     return this.compile(mainTmpl, this.props);
   }
