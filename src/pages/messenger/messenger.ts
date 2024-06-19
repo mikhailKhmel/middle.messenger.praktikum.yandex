@@ -26,7 +26,9 @@ export class Messenger extends Block {
   componentDidMount(_oldProps?: Props) {
     super.componentDidMount(_oldProps);
     new ChatsApi().chats()
-      .then((res) => this.setProps({ chats: res.map((x: ChatType) => new Chat({ name: x.title }).getContent()?.outerHTML) }));
+      .then((res) => {
+        this.setProps({ chats: res.map((x: ChatType) => new Chat({ name: x.title }).getContent()?.outerHTML) });
+      });
   }
 
   render(): DocumentFragment {
