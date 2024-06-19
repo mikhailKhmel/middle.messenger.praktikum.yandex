@@ -23,10 +23,6 @@ export default class AddChatButton extends Block {
             ?.toString() ?? '';
           if (!title) return;
           await (new ChatsApi().createChat({ title }));
-          // @ts-ignore
-          if (!window.chatTitleDialog) return;
-          // @ts-ignore
-          window.chatTitleDialog.close();
           router.refresh();
         },
       },
