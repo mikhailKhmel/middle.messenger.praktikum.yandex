@@ -63,10 +63,6 @@ export class Router {
     this._onRoute(pathname);
   }
 
-  refresh() {
-    window.location.href = window.location.href;
-  }
-
   back() {
     if (this._historyIndex! > 0) {
       this._historyIndex!--;

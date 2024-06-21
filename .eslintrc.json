@@ -5,6 +5,7 @@
     "@typescript-eslint"
   ],
   "rules": {
+    "object-curly-newline": "off",
     "no-restricted-syntax": "off",
     "max-classes-per-file": "off",
     "prefer-regex-literals": "off",
