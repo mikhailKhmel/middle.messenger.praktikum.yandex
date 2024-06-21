@@ -2,9 +2,7 @@ import Button from '../../components/button';
 import FormInput from '../../components/forminput';
 import Input from '../../components/input';
 import Block, { Props } from '../../types/Block.ts';
-import {
-  validateEmail, validateLogin, validateName, validatePhone,
-} from '../../utils/validation.ts';
+import { validateEmail, validateLogin, validateName, validatePhone } from '../../utils/validation.ts';
 import './settings.less';
 import editTmpl from './settings.tmpl.ts';
 import Settingsform from '../../components/settingsform';
@@ -169,9 +167,8 @@ export class Settings extends Block {
           event.preventDefault();
           if (!(event.target instanceof HTMLFormElement)) return;
           const formData = new FormData(event.target);
-          const avatar = formData.get('avatar') as File;
           try {
-            await (new UserApi().updateAvatar({ avatar }));
+            await (new UserApi().updateAvatar(formData));
             router.back();
           } catch (error: unknown) {
             console.error(error);

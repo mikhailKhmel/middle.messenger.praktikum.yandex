@@ -6,38 +6,42 @@ export default `
         </a>
         <h2>Мой профиль</h2>
     </div>
-    <div class="container">
+    <div class="profile-container">
         <div class="column">
             <div class="avatar">
-                <i class="bi bi-person-circle"></i>
+                {{#if avatar}}
+                  <img src="https://ya-praktikum.tech/api/v2/resources{{avatar}}" alt="avatar">
+                {{else}}
+                  <i class="bi bi-person-circle"></i>
+                {{/if}}
             </div>
-            <div>Миша</div>
+            <div>{{displayname}}</div>
         </div>
         <hr>
         <div class="profile-info">
             <div class="row">
                 <div>Почта</div>
-                <div>xmelnickij.m.a@yandex.ru</div>
+                <div>{{email}}</div>
             </div>
             <div class="row">
                 <div>Логин</div>
-                <div>mikhail.khmel</div>
+                <div>{{login}}</div>
             </div>
             <div class="row">
                 <div>Имя</div>
-                <div>Михаил</div>
+                <div>{{firstname}}</div>
             </div>
             <div class="row">
                 <div>Фамилия</div>
-                <div>Хмельницкий</div>
+                <div>{{lastname}}</div>
             </div>
             <div class="row">
                 <div>Имя в чате</div>
-                <div>Миш</div>
+                <div>{{displayname}}</div>
             </div>
             <div class="row">
                 <div>Номер телефона</div>
-                <div>+7 (999) 999-99-99</div>
+                <div>{{phone}}</div>
             </div>
         </div>
         <hr>

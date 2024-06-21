@@ -8,7 +8,8 @@ import mainTmpl from './messenger.tmpl.ts';
 import { ChatsApi } from '../../api/ChatsApi.ts';
 import AddChatButton from '../../components/add-chat-button';
 import { ChatType } from '../../types/ChatType.ts';
-import Chat from '../../components/chat';
+import ChatButton from '../../components/chat-button';
+import { Chat } from '../../components/chat';
 
 interface IProps {
   profile: Block;
@@ -25,22 +26,43 @@ export class Messenger extends Block {
 
   componentDidMount(_oldProps?: Props) {
     super.componentDidMount(_oldProps);
+    this.refresh();
+  }
+
+  refresh() {
     new ChatsApi().chats()
       .then((res) => {
-        this.setProps({ chats: res.map((x: ChatType) => new Chat({ name: x.title }).getContent()?.outerHTML) });
+        const chats: ChatButton[] = res.map((x: ChatType) => new ChatButton({
+          name: x.title,
+          avatar: x.avatar,
+          events: {
+            click: () => {
+              (this.children.chat as Chat)?.setProps({ chatId: x.id });
+              (this.children.chat as Chat)?.show();
+            },
+          },
+        }));
+        this.setChildren({
+          chats,
+        });
       });
   }
 
   render(): DocumentFragment {
     let message: string = '';
-    const addChatButton = new AddChatButton({});
+    const addChatButton = new AddChatButton({
+      onRefresh: () => {
+        this.refresh();
+      },
+    });
     const messageInput = new Input({
       id: 'message',
       name: 'message',
       type: 'text',
       placeholder: 'Введите сообщение',
       events: {
-        blur: (event: any) => {
+        blur: (event: Event) => {
+          if (!(event.target instanceof HTMLInputElement)) return;
           message = event.target.value;
         },
       },
@@ -55,11 +77,16 @@ export class Messenger extends Block {
       },
     });
 
+    const chat = new Chat({});
+    chat.hide();
+
     this.children = {
+      ...this.children,
       addChatButton,
       profile: new Profile(),
       messageInput: messageFormInput,
       sendButton,
+      chat,
     };
     return this.compile(mainTmpl, this.props);
   }

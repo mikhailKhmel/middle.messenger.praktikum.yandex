@@ -22,7 +22,17 @@ export class UserApi {
     return res;
   }
 
-  async updateAvatar(data: {avatar: File}) {
+  async updateAvatar(data: FormData) {
     return userAPIInstance.put(`${this.baseUrl}/profile/avatar`, { data });
+  }
+
+  async searchUser(data: { login: string }) {
+    const res = await userAPIInstance.post(`${this.baseUrl}/search`, {
+      data,
+      headers: {
+        'content-type': 'application/json',
+      },
+    });
+    return JSON.parse(res.response);
   }
 }

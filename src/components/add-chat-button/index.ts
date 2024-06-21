@@ -2,11 +2,14 @@ import Block, { Props } from '../../types/Block.ts';
 import addChatButtonTmpl from './add-chat-button.tmpl.ts';
 import Form from '../form';
 import { ChatsApi } from '../../api/ChatsApi.ts';
-import { router } from '../../index.ts';
 import './add-chat-button.less';
 
+interface IProps extends Props {
+  onRefresh: () => void;
+}
+
 export default class AddChatButton extends Block {
-  constructor(props?: Props) {
+  constructor(props?: IProps) {
     super('div', props);
   }
 
@@ -23,7 +26,7 @@ export default class AddChatButton extends Block {
             ?.toString() ?? '';
           if (!title) return;
           await (new ChatsApi().createChat({ title }));
-          router.refresh();
+          this.props.onRefresh();
         },
       },
     });

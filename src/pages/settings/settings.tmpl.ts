@@ -6,7 +6,7 @@ export default `
         </a>
         <h2>Редактирование профиля</h2>
     </div>
-    <div class="container">
+    <div class="settings-container">
         <div class="column">
             <div class="avatar">
                 <i class="bi bi-person-circle"></i>

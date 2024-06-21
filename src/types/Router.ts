@@ -64,7 +64,7 @@ export class Router {
   }
 
   refresh() {
-    window.location.href = document.referrer;
+    window.location.href = window.location.href;
   }
 
   back() {

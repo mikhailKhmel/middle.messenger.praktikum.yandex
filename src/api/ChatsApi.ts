@@ -19,4 +19,29 @@ export class ChatsApi {
     });
     return res;
   }
+
+  async getChatUsers({ id }: { id: number }) {
+    const res = await chatAPIInstance.get(`${this.baseUrl}/${id}/users`);
+    return JSON.parse(res.response);
+  }
+
+  async addUser(data: { users: number[], chatId: number }) {
+    const res = await chatAPIInstance.put(`${this.baseUrl}/users`, {
+      data,
+      headers: {
+        'content-type': 'application/json',
+      },
+    });
+    return res;
+  }
+
+  async deleteUser(data: { users: number[], chatId: number }) {
+    const res = await chatAPIInstance.delete(`${this.baseUrl}/users`, {
+      data,
+      headers: {
+        'content-type': 'application/json',
+      },
+    });
+    return res;
+  }
 }

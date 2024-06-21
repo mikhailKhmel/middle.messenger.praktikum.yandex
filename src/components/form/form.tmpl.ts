@@ -1,5 +1,5 @@
 export default `
-<form class="card-form" action="">
+<form class="card-form" method="post">
     {{{children}}}
 </form>
 `;

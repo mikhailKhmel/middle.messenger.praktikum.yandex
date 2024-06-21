@@ -18,6 +18,10 @@ export default class Avatarform extends Block {
     const button = new Button({
       label: 'Сохранить',
     });
-    return this.compile(avatarformTmpl, { inputAvatar, button });
+    this.children = {
+      inputAvatar,
+      button,
+    };
+    return this.compile(avatarformTmpl, {});
   }
 }

@@ -10,12 +10,28 @@ export class Profile extends Block {
     super('div', props);
   }
 
+  componentDidMount(_oldProps?: Props) {
+    super.componentDidMount(_oldProps);
+    new AuthApi().getUserInfo()
+      .then((userInfo) => {
+        this.setProps({
+          avatar: userInfo.avatar,
+          display_name: userInfo.display_name,
+          email: userInfo.email,
+          first_name: userInfo.first_name,
+          login: userInfo.login,
+          phone: userInfo.phone,
+          second_name: userInfo.second_name,
+        });
+      });
+  }
+
   render(): DocumentFragment {
     const logoutButton = new Button({
       label: 'Выйти из профиля',
       events: {
         click: async () => {
-          await (new AuthApi().logout());
+          await new AuthApi().logout();
           router.go('/');
         },
       },

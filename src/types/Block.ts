@@ -3,6 +3,7 @@ import Handlebars from 'handlebars';
 import EventBus from './EventBus.ts';
 
 export type Props = Record<string, any>;
+export type Childrens = Record<string, (Block | Block[])>;
 export default class Block {
   static EVENTS = {
     INIT: 'init',
@@ -13,7 +14,7 @@ export default class Block {
 
   protected props: Props;
 
-  protected children: { [key: string]: Block } = {};
+  protected children: Childrens;
 
   private _id: string | null = null;
 
@@ -57,7 +58,7 @@ export default class Block {
 
     Object.entries(propsAndChildren)
       .forEach(([key, value]) => {
-        if (value instanceof Block) {
+        if (value instanceof Block || (Array.isArray(value) && value.every((x) => x instanceof Block))) {
           children[key] = value;
         } else {
           props[key] = value;
@@ -81,7 +82,11 @@ export default class Block {
 
     Object.entries(this.children)
       .forEach(([key, child]) => {
-        propsAndStubs[key] = `<div data-id="${child._id}"></div>`;
+        if (Array.isArray(child)) {
+          propsAndStubs[key] = child.map((c) => `<div data-id="${c._id}"></div>`);
+        } else {
+          propsAndStubs[key] = `<div data-id="${child._id}"></div>`;
+        }
       });
 
     const compiledTemplate = Handlebars.compile(template.trim());
@@ -91,9 +96,15 @@ export default class Block {
 
     Object.values(this.children)
       .forEach((child) => {
-        const stub = fragment.content.querySelector(`[data-id="${child._id}"]`);
-
-        stub?.replaceWith(child.getContent()!);
+        if (Array.isArray(child)) {
+          for (const c of child) {
+            const stub = fragment.content.querySelector(`[data-id="${c._id}"]`);
+            stub?.replaceWith(c.getContent()!);
+          }
+        } else {
+          const stub = fragment.content.querySelector(`[data-id="${child._id}"]`);
+          stub?.replaceWith(child.getContent()!);
+        }
       });
 
     return fragment.content;
@@ -107,6 +118,11 @@ export default class Block {
       .emit(Block.EVENTS.FLOW_CDM);
   }
 
+  dispatchComponentDidUpdate(): void {
+    this.eventBus()
+      .emit(Block.EVENTS.FLOW_CDU);
+  }
+
   componentDidUpdate(_oldProps: Props, _newProps: Props): boolean {
     return true;
   }
@@ -116,6 +132,14 @@ export default class Block {
       return;
     }
     Object.assign(this.props, nextProps);
+  }
+
+  setChildren(nextChildren: Childrens): void {
+    if (!nextChildren) {
+      return;
+    }
+    this.children = { ...this.children, ...nextChildren };
+    this.dispatchComponentDidUpdate();
   }
 
   render(): DocumentFragment | null {
@@ -156,7 +180,13 @@ export default class Block {
     this.componentDidMount();
     Object.values(this.children)
       .forEach((child) => {
-        child.dispatchComponentDidMount();
+        if (Array.isArray(child)) {
+          for (const c of child) {
+            c.dispatchComponentDidMount();
+          }
+        } else {
+          child.dispatchComponentDidMount();
+        }
       });
   }
 
@@ -166,7 +196,6 @@ export default class Block {
     Object.keys(events)
       .forEach((eventName) => {
         if (this._element) {
-          console.log('event created', eventName);
           this._element.addEventListener(eventName, events[eventName]);
         } else {
           console.log('event ERROR', eventName);
@@ -179,7 +208,6 @@ export default class Block {
 
     Object.keys(events)
       .forEach((eventName) => {
-        console.log('event removed', eventName);
         this._element!.removeEventListener(eventName, events[eventName]);
       });
   }
@@ -211,10 +239,11 @@ export default class Block {
         return typeof value === 'function' ? value.bind(target) : value;
       },
       set(target, prop: string, value) {
+        const oldProps = { ...target };
         target[prop] = value;
 
         self.eventBus()
-          .emit(Block.EVENTS.FLOW_CDU, { ...target }, target);
+          .emit(Block.EVENTS.FLOW_CDU, oldProps, target);
         return true;
       },
       deleteProperty() {
