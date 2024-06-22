@@ -10,6 +10,7 @@ import AddChatButton from '../../components/add-chat-button';
 import { ChatType } from '../../types/ChatType.ts';
 import ChatButton from '../../components/chat-button';
 import { Chat } from '../../components/chat';
+import { AuthApi } from '../../api/AuthApi.ts';
 
 interface IProps {
   profile: Block;
@@ -22,6 +23,7 @@ interface IProps {
 export class Messenger extends Block {
   constructor(props: IProps) {
     super('div', props);
+    this.refresh = this.refresh.bind(this);
   }
 
   componentDidMount(_oldProps?: Props) {
@@ -45,6 +47,10 @@ export class Messenger extends Block {
         this.setChildren({
           chats,
         });
+      });
+    new AuthApi().getUserInfo()
+      .then((res) => {
+        this.setProps({ userId: res.id });
       });
   }
 
@@ -77,7 +83,10 @@ export class Messenger extends Block {
       },
     });
 
-    const chat = new Chat({});
+    const chat = new Chat({
+      userId: this.props.userId,
+      onRefresh: this.refresh,
+    });
     chat.hide();
 
     this.children = {

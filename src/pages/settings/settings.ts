@@ -22,7 +22,8 @@ export class Settings extends Block {
       name: 'email',
       type: 'email',
       events: {
-        blur: (event: any) => {
+        blur: (event: Event) => {
+          if (!(event.target instanceof HTMLInputElement)) return;
           const { value } = event.target;
           const isValidate = validateEmail(value);
           inputEmailForm.setProps({ error: isValidate ? '' : 'Email невалиден' });
@@ -34,7 +35,8 @@ export class Settings extends Block {
       name: 'login',
       type: 'text',
       events: {
-        blur: (event: any) => {
+        blur: (event: Event) => {
+          if (!(event.target instanceof HTMLInputElement)) return;
           const { value } = event.target;
           const isValidate = validateLogin(value);
           inputLoginForm.setProps({ error: isValidate ? '' : 'Логин невалиден' });
@@ -46,7 +48,8 @@ export class Settings extends Block {
       name: 'first_name',
       type: 'text',
       events: {
-        blur: (event: any) => {
+        blur: (event: Event) => {
+          if (!(event.target instanceof HTMLInputElement)) return;
           const { value } = event.target;
           const isValidate = validateName(value);
           inputFirstnameForm.setProps({ error: isValidate ? '' : 'Имя невалидно' });
@@ -58,7 +61,8 @@ export class Settings extends Block {
       name: 'second_name',
       type: 'text',
       events: {
-        blur: (event: any) => {
+        blur: (event: Event) => {
+          if (!(event.target instanceof HTMLInputElement)) return;
           const { value } = event.target;
           const isValidate = validateName(value);
           inputSecondnameForm.setProps({ error: isValidate ? '' : 'Имя невалидно' });
@@ -75,7 +79,8 @@ export class Settings extends Block {
       name: 'phone',
       type: 'phone',
       events: {
-        blur: (event: any) => {
+        blur: (event: Event) => {
+          if (!(event.target instanceof HTMLInputElement)) return;
           const { value } = event.target;
           const isValidate = validatePhone(value);
           inputPhoneForm.setProps({ error: isValidate ? '' : 'Номер телефона невалиден' });

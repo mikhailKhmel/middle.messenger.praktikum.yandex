@@ -1,17 +1,15 @@
 import { HTTPTransport } from '../types/HTTPTransport.ts';
 
-const chatAPIInstance = new HTTPTransport();
-
-export class ChatsApi {
-  baseUrl = 'https://ya-praktikum.tech/api/v2/chats';
+export class ChatsApi extends HTTPTransport {
+  chatUrl = `${this.BASE_URL}/chats`;
 
   async chats() {
-    const res = await chatAPIInstance.get(`${this.baseUrl}`);
+    const res = await this.get(`${this.chatUrl}`);
     return JSON.parse(res.response);
   }
 
   async createChat(data: { title: string }) {
-    const res = await chatAPIInstance.post(`${this.baseUrl}`, {
+    const res = await this.post(`${this.chatUrl}`, {
       data,
       headers: {
         'content-type': 'application/json',
@@ -21,12 +19,12 @@ export class ChatsApi {
   }
 
   async getChatUsers({ id }: { id: number }) {
-    const res = await chatAPIInstance.get(`${this.baseUrl}/${id}/users`);
+    const res = await this.get(`${this.chatUrl}/${id}/users`);
     return JSON.parse(res.response);
   }
 
   async addUser(data: { users: number[], chatId: number }) {
-    const res = await chatAPIInstance.put(`${this.baseUrl}/users`, {
+    const res = await this.put(`${this.chatUrl}/users`, {
       data,
       headers: {
         'content-type': 'application/json',
@@ -36,12 +34,21 @@ export class ChatsApi {
   }
 
   async deleteUser(data: { users: number[], chatId: number }) {
-    const res = await chatAPIInstance.delete(`${this.baseUrl}/users`, {
+    const res = await this.delete(`${this.chatUrl}/users`, {
       data,
       headers: {
         'content-type': 'application/json',
       },
     });
     return res;
+  }
+
+  async token(id: number) {
+    const res = await this.post(`${this.chatUrl}/token/${id}`);
+    return JSON.parse(res.response);
+  }
+
+  async updateAvatar(data: FormData) {
+    return this.put(`${this.chatUrl}/avatar`, { data });
   }
 }

@@ -33,6 +33,8 @@ type OptionsWithoutMethod = { data?: any, headers?: any };
 type HTTPMethod = (url: string, options?: OptionsWithoutMethod) => Promise<XMLHttpRequest>;
 
 export class HTTPTransport {
+  BASE_URL = 'https://ya-praktikum.tech/api/v2';
+
   get: HTTPMethod = (url, options = {}) =>
     this.request(url, {
       ...options,

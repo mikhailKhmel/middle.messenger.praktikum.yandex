@@ -1,12 +1,15 @@
+import { RESOURCE_URL } from '../../types/Consts.ts';
+
 export default `
 <button class="contact">
-    <div class="contact-avatar">
       {{#if avatar}}
-        <img src="https://ya-praktikum.tech/api/v2/resources{{avatar}}" alt="avatar">
+        <img class="contact-avatar" src="${RESOURCE_URL}{{avatar}}" alt="avatar">
       {{else}}
-        <i class="bi bi-person-circle"></i>
+      <div class="contact-icon">
+              <i  class="bi bi-person-circle"></i>
+
+</div>
       {{/if}}
-    </div>
     <div class="contact-name">{{name}}</div>
 </button>
 `;

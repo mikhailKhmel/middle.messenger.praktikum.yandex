@@ -1,3 +1,5 @@
+import { RESOURCE_URL } from '../../types/Consts.ts';
+
 export default `
 <main>
     <div class="header">
@@ -8,13 +10,14 @@ export default `
     </div>
     <div class="profile-container">
         <div class="column">
-            <div class="avatar">
                 {{#if avatar}}
-                  <img src="https://ya-praktikum.tech/api/v2/resources{{avatar}}" alt="avatar">
+                  <img class="avatar" src="${RESOURCE_URL}{{avatar}}" alt="avatar">
                 {{else}}
-                  <i class="bi bi-person-circle"></i>
+                  <div class="icon">
+                    <i class="bi bi-person-circle"></i>
+                  </div>
+
                 {{/if}}
-            </div>
             <div>{{displayname}}</div>
         </div>
         <hr>
@@ -29,15 +32,15 @@ export default `
             </div>
             <div class="row">
                 <div>Имя</div>
-                <div>{{firstname}}</div>
+                <div>{{first_name}}</div>
             </div>
             <div class="row">
                 <div>Фамилия</div>
-                <div>{{lastname}}</div>
+                <div>{{second_name}}</div>
             </div>
             <div class="row">
                 <div>Имя в чате</div>
-                <div>{{displayname}}</div>
+                <div>{{display_name}}</div>
             </div>
             <div class="row">
                 <div>Номер телефона</div>

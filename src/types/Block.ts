@@ -217,6 +217,16 @@ export default class Block {
     if (!response) {
       return;
     }
+    Object.values(this.children)
+      .forEach((child) => {
+        if (Array.isArray(child)) {
+          for (const c of child) {
+            c.dispatchComponentDidUpdate();
+          }
+        } else {
+          child.dispatchComponentDidUpdate();
+        }
+      });
     this._render();
   }
 

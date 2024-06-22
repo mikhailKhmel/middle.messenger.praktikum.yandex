@@ -1,17 +1,15 @@
 import { HTTPTransport } from '../types/HTTPTransport.ts';
 
-const chatAPIInstance = new HTTPTransport();
-
-export class AuthApi {
-  baseUrl = 'https://ya-praktikum.tech/api/v2/auth';
+export class AuthApi extends HTTPTransport {
+  authUrl = `${this.BASE_URL}/auth`;
 
   async getUserInfo() {
-    const res = await chatAPIInstance.get(`${this.baseUrl}/user`);
+    const res = await this.get(`${this.authUrl}/user`);
     return JSON.parse(res.response);
   }
 
   signin(data: { login: string; password: string }) {
-    return chatAPIInstance.post(`${this.baseUrl}/signin`, {
+    return this.post(`${this.authUrl}/signin`, {
       data,
       headers: {
         'content-type': 'application/json',
@@ -27,7 +25,7 @@ export class AuthApi {
     password: string,
     phone: string
   }) {
-    return chatAPIInstance.post(`${this.baseUrl}/signup`, {
+    return this.post(`${this.authUrl}/signup`, {
       data,
       headers: {
         'content-type': 'application/json',
@@ -36,6 +34,6 @@ export class AuthApi {
   }
 
   logout() {
-    chatAPIInstance.post(`${this.baseUrl}/logout`, { headers: {} });
+    this.post(`${this.authUrl}/logout`, { headers: {} });
   }
 }

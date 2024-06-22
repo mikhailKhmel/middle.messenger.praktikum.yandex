@@ -1,6 +1,8 @@
 export default `
 <div class="chat">
   <div class="users">
+  <h5>Изменить аватарку чата:</h5>
+ {{{avatarForm}}}
     <h5>Участники чата:</h5>
     {{#each users}}
                 {{{.}}}
@@ -10,10 +12,16 @@ export default `
     </button>
   </div>
   <div class="messages">
-    <div class="message-input">
-              {{{messageInput}}}
-              {{{sendButton}}}
-    </div>
+    {{{form}}}
+    {{#each messages}}
+    <div>
+    <div>{{{this.time}}} > userId: {{{this.user_id}}}</div>
+    <div>{{{this.content}}}</div>
+    <hr>
+</div>
+
+
+    {{/each}}
   </div>
 </div>
 {{{addUser}}}

@@ -5,6 +5,10 @@ import { ChatsApi } from '../../api/ChatsApi.ts';
 import { AddUser } from '../add-user';
 import Input from '../input';
 import SendButton from '../send-button';
+import { WSTransport } from '../../types/WSTransport.ts';
+import { WEBSCOKET_URL } from '../../types/Consts.ts';
+import Form from '../form';
+import Avatarform from '../avatarform';
 
 export class Chat extends Block {
   constructor(props: Props) {
@@ -30,24 +34,78 @@ export class Chat extends Block {
       second_name: user.second_name,
       onRefresh: this.loadChat,
     }));
-    console.log({ users });
-    this.setChildren({ users });
+    const { token } = (await (new ChatsApi().token(id)));
+    const socket = new WSTransport(`${WEBSCOKET_URL}/${this.props.userId}/${this.props.chatId}/${token}`);
+    await socket.connect();
+    socket.send({
+      content: '0',
+      type: 'get old',
+    });
+    socket.on('message', (data) => {
+      console.log({ data });
+      this.setProps({ messages: data });
+    });
+    this.setChildren({
+      users,
+    });
+    this.setProps({
+      token,
+      socket,
+    });
   }
 
   render(): DocumentFragment {
     this.children = {
       ...this.children,
+      avatarForm: new Form({
+        children: new Avatarform(),
+        events: {
+          submit: async (event: Event) => {
+            event.preventDefault();
+            if (!(event.target instanceof HTMLFormElement)) return;
+            const formData = new FormData(event.target);
+            formData.append('chatId', this.props.chatId);
+            try {
+              await (new ChatsApi().updateAvatar(formData));
+              this.props.onRefresh();
+            } catch (error: unknown) {
+              console.error(error);
+            }
+          },
+        },
+      }),
       addUser: new AddUser({
         chatId: this.props.chatId,
         onRefresh: this.loadChat,
       }),
+      form: new Form({
+        children: new SendMessageForm({
 
-      messageInput: new Input({
-        id: 'message',
-        name: 'message',
-        type: 'text',
+          messageInput: new Input({
+            id: 'message',
+            name: 'message',
+            type: 'text',
+          }),
+          sendButton: new SendButton({}),
+
+        }),
+        events: {
+          submit: async (event: Event) => {
+            event.preventDefault();
+            if (!(event.target instanceof HTMLFormElement)) return;
+            const formData = new FormData(event.target);
+            const message = formData.get('message')
+              ?.toString() ?? '';
+            if (!message) return;
+            this.props.socket.send({
+              content: message,
+              type: 'message',
+            });
+            await this.loadChat();
+          },
+        },
       }),
-      sendButton: new SendButton({}),
+
     };
     return this.compile(chatTmpl, this.props);
   }
@@ -92,6 +150,23 @@ class DeleteUserButton extends Block {
     return this.compile(
       `
                 <button><i class="bi bi-x"></i></button>`,
+      this.props,
+    );
+  }
+}
+
+class SendMessageForm extends Block {
+  constructor(props: Props) {
+    super('div', props);
+  }
+
+  render(): DocumentFragment | null {
+    return this.compile(
+      `
+      <div class="message-input">
+                {{{messageInput}}}
+              {{{sendButton}}}
+</div>`,
       this.props,
     );
   }
