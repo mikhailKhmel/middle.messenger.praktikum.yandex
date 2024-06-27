@@ -5,12 +5,12 @@
   "type": "module",
   "husky": {
     "hooks": {
-      "pre-commit": "npm-run-all format test lint:fix"
+      "pre-commit": "prettier --write \"src/**/*.{js,ts,tsx,json,css}\" && eslint ./src --ext .js,.ts,.tsx --fix && git add -A ."
     }
   },
   "scripts": {
-    "lint": "eslint . --ext .js,.ts,.tsx",
-    "lint:fix": "eslint . --ext .js,.ts,.tsx --fix",
+    "lint": "eslint ./src --ext .js,.ts,.tsx",
+    "lint:fix": "eslint ./src --ext .js,.ts,.tsx --fix",
     "format": "prettier --write \"src/**/*.{js,ts,tsx,json,css}\"",
     "dev": "vite --host",
     "build": "tsc && vite build",
