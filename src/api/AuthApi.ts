@@ -5,7 +5,7 @@ export class AuthApi extends HTTPTransport {
 
   async getUserInfo() {
     const res = await this.get(`${this.authUrl}/user`);
-    return JSON.parse(res.response);
+    return JSON.parse(res);
   }
 
   signin(data: { login: string; password: string }) {

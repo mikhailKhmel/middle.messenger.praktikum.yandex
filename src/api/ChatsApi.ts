@@ -5,7 +5,7 @@ export class ChatsApi extends HTTPTransport {
 
   async chats() {
     const res = await this.get(`${this.chatUrl}`);
-    return JSON.parse(res.response);
+    return JSON.parse(res);
   }
 
   async createChat(data: { title: string }) {
@@ -17,7 +17,7 @@ export class ChatsApi extends HTTPTransport {
 
   async getChatUsers({ id }: { id: number }) {
     const res = await this.get(`${this.chatUrl}/${id}/users`);
-    return JSON.parse(res.response);
+    return JSON.parse(res);
   }
 
   async addUser(data: { users: number[]; chatId: number }) {
@@ -36,7 +36,7 @@ export class ChatsApi extends HTTPTransport {
 
   async token(id: number) {
     const res = await this.post(`${this.chatUrl}/token/${id}`);
-    return JSON.parse(res.response);
+    return JSON.parse(res);
   }
 
   async updateAvatar(data: FormData) {

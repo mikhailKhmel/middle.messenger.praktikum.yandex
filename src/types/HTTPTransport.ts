@@ -7,80 +7,95 @@ export enum MethodEnum {
 }
 
 export type Options = {
-  headers?: any;
+  headers?: Record<string, string>;
   method: MethodEnum;
-  data?: any;
+  data?: Record<string, any> | FormData;
 };
 
-export function queryStringify(data: Record<string, string>) {
-  if (typeof data !== 'object') {
-    throw new Error('Data must be object');
-  }
-
-  const keys = Object.keys(data);
-  return keys.reduce(
-    (result, key, index) => `${result}${key}=${data[key]}${index < keys.length - 1 ? '&' : ''}`,
-    '?',
-  );
+export function queryStringify(data: Record<string, any>): string {
+  if (!data || Object.keys(data).length === 0) return '';
+  return Object.keys(data)
+    .map((key) => `${encodeURIComponent(key)}=${encodeURIComponent(data[key])}`)
+    .join('&');
 }
 
-type OptionsWithoutMethod = { data?: any; headers?: any };
-type HTTPMethod = (url: string, options?: OptionsWithoutMethod) => Promise<XMLHttpRequest>;
+type OptionsWithoutMethod = Omit<Options, 'method'>;
+type HTTPMethod = (url: string, options?: OptionsWithoutMethod) => Promise<any>;
 
 export class HTTPTransport {
-  BASE_URL = 'https://ya-praktikum.tech/api/v2';
+  static BASE_URL = 'https://ya-praktikum.tech/api/v2';
 
   get: HTTPMethod = (url, options = {}) =>
-    this.request(url, {
-      ...options,
-      method: MethodEnum.GET,
-    });
+    this.request(url, { ...options, method: MethodEnum.GET });
 
   put: HTTPMethod = (url, options = {}) =>
-    this.request(url, {
-      ...options,
-      method: MethodEnum.PUT,
-    });
+    this.request(url, { ...options, method: MethodEnum.PUT });
 
   post: HTTPMethod = (url, options = {}) =>
-    this.request(url, {
-      ...options,
-      method: MethodEnum.POST,
-    });
+    this.request(url, { ...options, method: MethodEnum.POST });
 
   delete: HTTPMethod = (url, options = {}) =>
-    this.request(url, {
-      ...options,
-      method: MethodEnum.DELETE,
-    });
+    this.request(url, { ...options, method: MethodEnum.DELETE });
 
-  request(url: string, options: Options = { method: MethodEnum.GET }): Promise<XMLHttpRequest> {
-    const { headers, method, data } = options;
+  async request(url: string, options: Options): Promise<any> {
+    const { headers = {}, method, data } = options;
+    let fullUrl = url;
+
+    if (method === MethodEnum.GET && data) {
+      fullUrl += `?${queryStringify(data)}`;
+    }
 
     return new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
-      const isGet = method === MethodEnum.GET;
-      xhr.open(method, isGet && !!data ? `${url}${queryStringify(data)}` : url);
-      Object.keys(headers ?? {}).forEach((key) => {
-        xhr.setRequestHeader(key, headers[key]);
-      });
-      if (method === MethodEnum.POST || method === MethodEnum.PUT) {
-        xhr.setRequestHeader('Content-Type', 'application/json;charset=utf-8');
-      }
+      xhr.open(method, fullUrl);
+      xhr.withCredentials = true;
+      xhr.responseType = 'json';
+      xhr.timeout = 60000;
+
       xhr.onload = () => {
-        resolve(xhr);
+        if (xhr.status >= 200 && xhr.status < 300) {
+          resolve(xhr.response);
+        } else {
+          const status = xhr.status || 0;
+          const message = HTTPTransport.getStatusMessage(status);
+          reject({ status, reason: xhr.response?.reason || message });
+        }
       };
 
-      xhr.onabort = reject;
-      xhr.onerror = reject;
-      xhr.ontimeout = reject;
-      xhr.withCredentials = true;
+      xhr.onabort = () => reject({ reason: 'abort' });
+      xhr.onerror = () => reject({ reason: 'network error' });
+      xhr.ontimeout = () => reject({ reason: 'timeout' });
+
+      Object.keys(headers).forEach((key) => {
+        xhr.setRequestHeader(key, headers[key]);
+      });
 
       if (method === MethodEnum.GET || !data) {
         xhr.send();
+      } else if (data instanceof FormData) {
+        xhr.send(data);
       } else {
-        xhr.send(data instanceof FormData ? data : JSON.stringify(data));
+        xhr.send(JSON.stringify(data));
       }
     });
+  }
+
+  static getStatusMessage(status: number): string {
+    switch (Math.floor(status / 100)) {
+      case 0:
+        return 'abort';
+      case 1:
+        return 'Information';
+      case 2:
+        return 'Ok';
+      case 3:
+        return 'Redirect failed';
+      case 4:
+        return 'Access error';
+      case 5:
+        return 'Internal server error';
+      default:
+        return 'Unknown status';
+    }
   }
 }

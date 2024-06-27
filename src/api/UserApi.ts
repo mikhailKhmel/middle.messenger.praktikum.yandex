@@ -28,6 +28,6 @@ export class UserApi extends HTTPTransport {
     const res = await this.post(`${this.userUrl}/search`, {
       data,
     });
-    return JSON.parse(res.response);
+    return JSON.parse(res);
   }
 }

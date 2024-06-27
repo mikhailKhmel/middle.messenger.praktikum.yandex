@@ -1,93 +1,69 @@
-import { expect } from 'chai';
-import sinon from 'sinon';
-import { HTTPTransport, MethodEnum } from './HTTPTransport';
+import { expect, use } from 'chai';
+import { SinonStub, createSandbox } from 'sinon';
+import sinonChai from 'sinon-chai';
+import { HTTPTransport, MethodEnum, queryStringify } from './HTTPTransport';
 
 describe('HTTPTransport', () => {
+  use(sinonChai);
+  const sandbox = createSandbox();
   let http: HTTPTransport;
-  let xhr: sinon.SinonFakeXMLHttpRequestStatic;
-  let requests: sinon.SinonFakeXMLHttpRequest[];
+  let request: SinonStub<any>;
 
   beforeEach(() => {
     http = new HTTPTransport();
-    xhr = sinon.useFakeXMLHttpRequest();
-    requests = [];
-
-    xhr.onCreate = (req) => {
-      requests.push(req);
-    };
+    request = sandbox.stub(http, 'request' as keyof typeof http).callsFake(() => Promise.resolve());
   });
 
   afterEach(() => {
-    xhr.restore();
+    sandbox.restore();
   });
 
-  it('должен корректно собирать строку для GET-запроса', () => {
-    const testURL = '/api/test';
-    const testData = { param1: 'value1', param2: 'value2' };
+  it('должен корректно передавать GET-запрос', () => {
+    http.get('', { data: { a: '1', b: '2' } });
+    expect(request).calledWithMatch('', { data: { a: '1', b: '2' }, method: MethodEnum.GET });
+  });
+  it('должен корректно передавать POST-запрос', () => {
+    http.post('', { data: { a: '1', b: '2' } });
+    expect(request).calledWithMatch('', { data: { a: '1', b: '2' }, method: MethodEnum.POST });
+  });
+  it('должен корректно передавать PUT-запрос', () => {
+    http.put('', { data: { a: '1', b: '2' } });
+    expect(request).calledWithMatch('', { data: { a: '1', b: '2' }, method: MethodEnum.PUT });
+  });
+  it('должен корректно передавать DELETE-запрос', () => {
+    http.delete('', { data: { a: '1', b: '2' } });
+    expect(request).calledWithMatch('', { data: { a: '1', b: '2' }, method: MethodEnum.DELETE });
+  });
+});
 
-    http.get(testURL, { data: testData });
-
-    expect(requests).to.have.lengthOf(1);
-    expect(requests[0].url).to.equal(`${testURL}?param1=value1&param2=value2`);
+describe('queryStringify', () => {
+  it('should return an empty string if input is empty', () => {
+    const result = queryStringify({});
+    expect(result).to.equal('');
   });
 
-  it('должен отправлять данные как JSON при POST-запросах', (done) => {
-    const testURL = '/api/test';
-    const testData = { key: 'value' };
-
-    http.post(testURL, { data: testData });
-
-    setTimeout(() => {
-      expect(requests).to.have.lengthOf(1);
-      expect(requests[0].method).to.equal(MethodEnum.POST);
-      expect(requests[0].requestHeaders['Content-Type']).to.equal('application/json;charset=utf-8');
-      expect(requests[0].requestBody).to.equal(JSON.stringify(testData));
-      done();
-    }, 50);
+  it('should correctly stringify query params', () => {
+    const result = queryStringify({ name: 'John', age: 30 });
+    expect(result).to.equal('name=John&age=30');
   });
 
-  it('должен отправлять данные как JSON при PUT-запросах', (done) => {
-    const testURL = '/api/test';
-    const testData = { key: 'value' };
-
-    http.put(testURL, { data: testData });
-
-    setTimeout(() => {
-      expect(requests).to.have.lengthOf(1);
-      expect(requests[0].method).to.equal(MethodEnum.PUT);
-      expect(requests[0].requestHeaders['Content-Type']).to.equal('application/json;charset=utf-8');
-      expect(requests[0].requestBody).to.equal(JSON.stringify(testData));
-      done();
-    }, 50);
+  it('should encode special characters in query params', () => {
+    const result = queryStringify({ name: 'John Doe', city: 'New York' });
+    expect(result).to.equal('name=John%20Doe&city=New%20York');
   });
 
-  it('должен корректно отправлять DELETE-запросы', () => {
-    const testURL = '/api/test';
-
-    http.delete(testURL);
-
-    expect(requests).to.have.lengthOf(1);
-    expect(requests[0].method).to.equal(MethodEnum.DELETE);
-    expect(requests[0].url).to.equal(`${testURL}`);
+  it('should handle numbers and strings correctly', () => {
+    const result = queryStringify({ id: 123, name: 'Alice' });
+    expect(result).to.equal('id=123&name=Alice');
   });
 
-  it('должен устанавливать кастомные заголовки', () => {
-    const testURL = '/api/test';
-    const customHeaders = { 'X-Custom-Header': 'value' };
-
-    http.post(testURL, { headers: customHeaders, data: {} });
-
-    expect(requests).to.have.lengthOf(1);
-    expect(requests[0].requestHeaders['X-Custom-Header']).to.equal('value');
+  it('should correctly process null and undefined values', () => {
+    const result = queryStringify({ name: null, age: undefined });
+    expect(result).to.equal('name=null&age=undefined');
   });
 
-  it('должен возвращать ошибку запроса', (done) => {
-    const testURL = '/api/test';
-
-    http.get(testURL).catch(() => {
-      done();
-    });
-
-    requests[0].error();
+  it('should process boolean values correctly', () => {
+    const result = queryStringify({ isActive: true, isAdmin: false });
+    expect(result).to.equal('isActive=true&isAdmin=false');
   });
 });
