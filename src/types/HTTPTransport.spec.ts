@@ -37,32 +37,32 @@ describe('HTTPTransport', () => {
 });
 
 describe('queryStringify', () => {
-  it('should return an empty string if input is empty', () => {
+  it('должен возвращать пустую строку если передан пустой объект', () => {
     const result = queryStringify({});
     expect(result).to.equal('');
   });
 
-  it('should correctly stringify query params', () => {
+  it('должен корректно превращать объект в параметры запроса', () => {
     const result = queryStringify({ name: 'John', age: 30 });
     expect(result).to.equal('name=John&age=30');
   });
 
-  it('should encode special characters in query params', () => {
+  it('должен корректно кодировать специальные символы в параметры запроса', () => {
     const result = queryStringify({ name: 'John Doe', city: 'New York' });
     expect(result).to.equal('name=John%20Doe&city=New%20York');
   });
 
-  it('should handle numbers and strings correctly', () => {
+  it('должен корректно интерпретировать числа и строки', () => {
     const result = queryStringify({ id: 123, name: 'Alice' });
     expect(result).to.equal('id=123&name=Alice');
   });
 
-  it('should correctly process null and undefined values', () => {
+  it('должен корретно обрабатывать null и undefined', () => {
     const result = queryStringify({ name: null, age: undefined });
     expect(result).to.equal('name=null&age=undefined');
   });
 
-  it('should process boolean values correctly', () => {
+  it('должен корректно обрабатывать булевые значения', () => {
     const result = queryStringify({ isActive: true, isAdmin: false });
     expect(result).to.equal('isActive=true&isAdmin=false');
   });
