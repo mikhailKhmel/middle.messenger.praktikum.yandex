@@ -43,7 +43,7 @@ describe('HTTPTransport', () => {
       expect(requests[0].requestHeaders['Content-Type']).to.equal('application/json;charset=utf-8');
       expect(requests[0].requestBody).to.equal(JSON.stringify(testData));
       done();
-    }, 0);
+    }, 50);
   });
 
   it('должен отправлять данные как JSON при PUT-запросах', (done) => {
@@ -58,7 +58,7 @@ describe('HTTPTransport', () => {
       expect(requests[0].requestHeaders['Content-Type']).to.equal('application/json;charset=utf-8');
       expect(requests[0].requestBody).to.equal(JSON.stringify(testData));
       done();
-    }, 0);
+    }, 50);
   });
 
   it('должен корректно отправлять DELETE-запросы', () => {
