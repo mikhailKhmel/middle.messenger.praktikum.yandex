@@ -65,7 +65,7 @@ export class HTTPTransport {
         xhr.setRequestHeader(key, headers[key]);
       });
       if (method === MethodEnum.POST || method === MethodEnum.PUT) {
-        xhr.setRequestHeader('Content-Type', 'application/json;charset=utf-8');
+        xhr.setRequestHeader('Content-Type', 'application/json');
       }
       xhr.onload = () => {
         resolve(xhr);

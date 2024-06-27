@@ -8,10 +8,7 @@ describe('HTTPTransport', () => {
   let requests: sinon.SinonFakeXMLHttpRequest[];
 
   beforeEach(() => {
-    // Создаем экземпляр HTTPTransport
     http = new HTTPTransport();
-
-    // Подменим глобальный XMLHttpRequest
     xhr = sinon.useFakeXMLHttpRequest();
     requests = [];
 
@@ -21,11 +18,10 @@ describe('HTTPTransport', () => {
   });
 
   afterEach(() => {
-    // Восстанавливаем оригинальный XMLHttpRequest после каждого теста
     xhr.restore();
   });
 
-  it('should build correct query string for GET requests', () => {
+  it('должен корректно собирать строку для GET-запроса', () => {
     const testURL = '/api/test';
     const testData = { param1: 'value1', param2: 'value2' };
 
@@ -35,7 +31,7 @@ describe('HTTPTransport', () => {
     expect(requests[0].url).to.equal(`${testURL}?param1=value1&param2=value2`);
   });
 
-  it('should send data as JSON for POST requests', () => {
+  it('должен отправлять данные как JSON при POST-запросах', () => {
     const testURL = '/api/test';
     const testData = { key: 'value' };
 
@@ -47,7 +43,7 @@ describe('HTTPTransport', () => {
     expect(requests[0].requestBody).to.equal(JSON.stringify(testData));
   });
 
-  it('should send data as JSON for PUT requests', () => {
+  it('должен отправлять данные как JSON при PUT-запросах', () => {
     const testURL = '/api/test';
     const testData = { key: 'value' };
 
@@ -59,7 +55,7 @@ describe('HTTPTransport', () => {
     expect(requests[0].requestBody).to.equal(JSON.stringify(testData));
   });
 
-  it('should send correct DELETE request', () => {
+  it('должен корректно отправлять DELETE-запросы', () => {
     const testURL = '/api/test';
 
     http.delete(testURL);
@@ -69,7 +65,7 @@ describe('HTTPTransport', () => {
     expect(requests[0].url).to.equal(`${testURL}`);
   });
 
-  it('should set custom headers', () => {
+  it('должен устанавливать кастомные заголовки', () => {
     const testURL = '/api/test';
     const customHeaders = { 'X-Custom-Header': 'value' };
 
@@ -79,7 +75,7 @@ describe('HTTPTransport', () => {
     expect(requests[0].requestHeaders['X-Custom-Header']).to.equal('value');
   });
 
-  it('should handle request errors', (done) => {
+  it('должен возвращать ошибку запроса', (done) => {
     const testURL = '/api/test';
 
     http.get(testURL).catch(() => {
