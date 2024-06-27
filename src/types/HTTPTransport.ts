@@ -23,7 +23,7 @@ type OptionsWithoutMethod = Omit<Options, 'method'>;
 type HTTPMethod = (url: string, options?: OptionsWithoutMethod) => Promise<any>;
 
 export class HTTPTransport {
-  static BASE_URL = 'https://ya-praktikum.tech/api/v2';
+  BASE_URL = 'https://ya-praktikum.tech/api/v2';
 
   get: HTTPMethod = (url, options = {}) =>
     this.request(url, { ...options, method: MethodEnum.GET });
