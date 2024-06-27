@@ -1,48 +1,67 @@
-import { contact } from '../../components/contact'
-import { input } from '../../components/input'
-import { message } from '../../components/message'
-import { profile } from '../../components/profile'
-import './main.less'
-import mainTmpl from './main.tmpl'
-import Handlebars from 'handlebars'
+import Contact from '../../components/contact';
+import FormInput from '../../components/forminput';
+import Input from '../../components/input';
+import Message from '../../components/message';
+import Profile from '../../components/profile';
+import SendButton from '../../components/send-button';
+import Block from '../../types/block';
+import getContacts from '../../utils/getContacts';
+import getMessages from '../../utils/getMessages';
+import { render } from '../../utils/renderDOM';
+import './main.less';
+import mainTmpl from './main.tmpl';
 
-Handlebars.registerPartial('contact', contact)
-Handlebars.registerPartial('message', message)
-Handlebars.registerPartial('input', input)
-Handlebars.registerPartial('profile', profile)
+interface IProps {
+  profile: Block;
+  contacts: string[];
+  messages: string[];
+  messageInput: Block;
+  sendButton: Block;
+}
 
-function getContacts() {
-  const contacts: { username: string }[] = []
-  for (let i = 0; i < 20; i++) {
-    contacts.push({ username: `Пользователь ${i}` })
+class Main extends Block {
+  constructor(props: IProps) {
+    super('div', props);
   }
-  return contacts
-}
 
-function getMessages() {
-  const messages: { message: string; isIncome: boolean }[] = []
-  for (let i = 0; i < 100; i++) {
-    messages.push({
-      message: `текст ${i}`,
-      isIncome: Math.round(Math.random()) === 0,
-    })
+  render(): DocumentFragment {
+    return this.compile(mainTmpl, this.props);
   }
-  return messages
 }
 
-function render(props: any) {
-  const root = document.querySelector('#root')
-  const template = Handlebars.compile(mainTmpl)
-  root!.innerHTML = template(props)
-}
-
-function init() {
-  const contacts = getContacts()
-  const messages = getMessages()
-  const props = { contacts, messages }
-  render(props)
-}
+let message: string = '';
 
 document.addEventListener('DOMContentLoaded', () => {
-  init()
-})
+  const contacts = getContacts().map(
+    (x) => new Contact({ name: x.username }).element?.innerHTML || '',
+  );
+  const messages = getMessages().map((x) => new Message(x).element?.innerHTML || '');
+  const messageInput = new Input({
+    id: 'message',
+    name: 'message',
+    type: 'text',
+    placeholder: 'Введите сообщение',
+    events: {
+      blur: (event: any) => {
+        message = event.target.value;
+      },
+    },
+  });
+  const messageFormInput = new FormInput({ input: messageInput });
+  const sendButton = new SendButton({
+    events: {
+      click: () => {
+        const trimMessage = message.trim();
+        messageFormInput.setProps({ error: !trimMessage ? 'Сообщение не может быть пустым' : '' });
+      },
+    },
+  });
+  const main = new Main({
+    profile: new Profile(),
+    contacts,
+    messages,
+    messageInput: messageFormInput,
+    sendButton,
+  });
+  render('#root', main);
+});

@@ -1,8 +1,18 @@
-import './message.less'
-import Handlebars from 'handlebars'
-import messageTmpl from './message.tmpl'
+import './message.less';
+import messageTmpl from './message.tmpl';
+import Block from '../../types/block';
 
-export const message = (context: { message: string; isIncome: boolean }) => {
-  const template = Handlebars.compile(messageTmpl)
-  return template(context)
+interface IProps {
+  message: string;
+  isIncome: boolean;
+}
+
+export default class Message extends Block {
+  constructor(props: IProps) {
+    super('section', props);
+  }
+
+  render(): DocumentFragment {
+    return this.compile(messageTmpl, this.props);
+  }
 }

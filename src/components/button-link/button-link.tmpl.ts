@@ -1,1 +1,1 @@
-export default `<a class="btn-link" href="{{href}}">{{label}}</a>`
+export default '<a class="btn-link" href="{{href}}">{{label}}</a>';

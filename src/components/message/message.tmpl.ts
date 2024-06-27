@@ -8,4 +8,4 @@ export default `
         <div class="message-content">{{message}}</div>
     </div>
 {{/if}}
-`
+`;

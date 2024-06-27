@@ -1,8 +1,18 @@
-import './button-link.less'
-import buttonLinkTmpl from './button-link.tmpl'
-import Handlebars from 'handlebars'
+import Block, { Props } from '../../types/block';
+import './button-link.less';
+import buttonLinkTmpl from './button-link.tmpl';
 
-export const buttonLink = (context: any) => {
-  const template = Handlebars.compile(buttonLinkTmpl)
-  return template(context)
+interface IProps extends Props {
+  href: string;
+  label: string;
+}
+
+export default class ButtonLink extends Block {
+  constructor(props?: IProps) {
+    super('div', props);
+  }
+
+  render(): DocumentFragment {
+    return this.compile(buttonLinkTmpl, this.props);
+  }
 }

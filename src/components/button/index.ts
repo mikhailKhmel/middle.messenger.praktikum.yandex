@@ -1,9 +1,17 @@
-import './button.less'
+import './button.less';
+import buttonTmpl from './button.tmpl';
+import Block, { Props } from '../../types/block';
 
-import Handlebars from 'handlebars'
-import buttonTmpl from './button.tmpl'
+interface IProps extends Props {
+  label: string;
+}
 
-export const button = (context: any) => {
-  const template = Handlebars.compile(buttonTmpl)
-  return template(context)
+export default class Button extends Block {
+  constructor(props?: IProps) {
+    super('button', props);
+  }
+
+  render(): DocumentFragment {
+    return this.compile(buttonTmpl, this.props);
+  }
 }

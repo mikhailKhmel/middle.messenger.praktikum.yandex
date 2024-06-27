@@ -1,8 +1,21 @@
-import './input.less'
-import inputTmpl from './input.tmpl'
-import Handlebars from 'handlebars'
+import Block, { Props } from '../../types/block';
+import './input.less';
+import inputTmpl from './input.tmpl';
 
-export const input = (context: any) => {
-  const template = Handlebars.compile(inputTmpl)
-  return template(context)
+interface IProps extends Props {
+  id: string;
+  name: string;
+  type: string;
+  required?: boolean;
+  placeholder?: string;
+}
+
+export default class Input extends Block {
+  constructor(props: IProps) {
+    super('div', props);
+  }
+
+  render(): DocumentFragment {
+    return this.compile(inputTmpl, this.props);
+  }
 }
