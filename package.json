@@ -3,6 +3,11 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm-run-all format test lint:fix"
+    }
+  },
   "scripts": {
     "lint": "eslint . --ext .js,.ts,.tsx",
     "lint:fix": "eslint . --ext .js,.ts,.tsx --fix",
@@ -26,6 +31,7 @@
     "chai": "^4.0.0",
     "eslint": "^8.57.0",
     "eslint-config-airbnb": "^19.0.4",
+    "husky": "^9.0.11",
     "less": "^4.2.0",
     "mocha": "^10.5.2",
     "stylelint": "^16.6.1",
