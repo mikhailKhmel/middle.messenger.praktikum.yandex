@@ -1,5 +1,5 @@
 export default `
-<a class="link" href="/pages/profile/">
+<a class="link" href="/profile">
     <div class="profile">
         <div class="profile-avatar">
             <i class="bi bi-person-circle"></i>

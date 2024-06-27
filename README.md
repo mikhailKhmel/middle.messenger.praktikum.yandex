@@ -9,16 +9,15 @@
 
 ## Страницы
 
-- `/` - стартовая страница;
-- `/pages/signin/` - авторизация;
-- `/pages/signup/` - регистрация;
-- `/pages/main/` - основная страница мессенджера со списком контактов и чатом;
-- `/pages/profile/` - профиль пользователя;
-- `/pages/profile/edit/` - редактирование профиля
-- `/pages/profile/password` - изменение пароля
+- `/` - авторизация;
+- `/signup` - регистрация;
+- `/messenger` - основная страница мессенджера со списком контактов и чатом;
+- `/profile` - профиль пользователя;
+- `/settings` - редактирование профиля
+- `/settings/password` - изменение пароля
 - `/pages/notfound/` - страница 404
 - `/pages/error/` - страница 5\*\*
 
 ## Ссылка на опубликованный проект
 
-https://messenger-mikhailkhmel.netlify.app/
+https://mikhailkhmel-messenger.netlify.app/

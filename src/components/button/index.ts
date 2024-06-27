@@ -1,6 +1,6 @@
 import './button.less';
 import buttonTmpl from './button.tmpl';
-import Block, { Props } from '../../types/block';
+import Block, { Props } from '../../types/Block.ts';
 
 interface IProps extends Props {
   label: string;
@@ -8,7 +8,7 @@ interface IProps extends Props {
 
 export default class Button extends Block {
   constructor(props?: IProps) {
-    super('button', props);
+    super('div', props);
   }
 
   render(): DocumentFragment {

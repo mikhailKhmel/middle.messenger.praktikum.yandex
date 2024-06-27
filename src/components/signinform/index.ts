@@ -1,4 +1,4 @@
-import Block, { Props } from '../../types/block';
+import Block, { Props } from '../../types/Block.ts';
 import './signinform.less';
 import signinformTmpl from './signinform.tmpl';
 
@@ -7,6 +7,7 @@ interface IProps extends Props {
   passwordInput: Block;
   button: Block;
 }
+
 export default class SignInForm extends Block {
   constructor(props: IProps) {
     super('div', props);

@@ -1,4 +1,4 @@
-import Block, { Props } from '../../types/block';
+import Block, { Props } from '../../types/Block.ts';
 import centerTmpl from './center.tmpl';
 import './center.less';
 
