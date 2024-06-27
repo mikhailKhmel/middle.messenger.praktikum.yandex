@@ -190,14 +190,14 @@ export class SignUp extends Block {
           }
 
           if (
-            isEmailValidate &&
-            isLoginValidate &&
-            isFirstnameValidate &&
-            isLastnameValidate &&
-            isPhoneValidate &&
-            isFirstPasswordValidate &&
-            isSecondPasswordValidate &&
-            isPasswordsEquel
+            isEmailValidate
+            && isLoginValidate
+            && isFirstnameValidate
+            && isLastnameValidate
+            && isPhoneValidate
+            && isFirstPasswordValidate
+            && isSecondPasswordValidate
+            && isPasswordsEquel
           ) {
             try {
               const response = await new AuthApi().signup({

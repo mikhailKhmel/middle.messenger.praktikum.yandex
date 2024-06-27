@@ -59,8 +59,8 @@ export default class Block {
 
     Object.entries(propsAndChildren).forEach(([key, value]) => {
       if (
-        value instanceof Block ||
-        (Array.isArray(value) && value.every((x) => x instanceof Block))
+        value instanceof Block
+        || (Array.isArray(value) && value.every((x) => x instanceof Block))
       ) {
         children[key] = value;
       } else {

@@ -131,11 +131,11 @@ export class Settings extends Block {
           const lastnameValidate = validateLogin(lastname);
           const phoneValidate = validateLogin(phone);
           if (
-            emailValidate &&
-            loginValidate &&
-            firstnameValidate &&
-            lastnameValidate &&
-            phoneValidate
+            emailValidate
+            && loginValidate
+            && firstnameValidate
+            && lastnameValidate
+            && phoneValidate
           ) {
             try {
               const res = await new UserApi().update({
