@@ -31,28 +31,34 @@ describe('HTTPTransport', () => {
     expect(requests[0].url).to.equal(`${testURL}?param1=value1&param2=value2`);
   });
 
-  it('должен отправлять данные как JSON при POST-запросах', () => {
+  it('должен отправлять данные как JSON при POST-запросах', (done) => {
     const testURL = '/api/test';
     const testData = { key: 'value' };
 
     http.post(testURL, { data: testData });
 
-    expect(requests).to.have.lengthOf(1);
-    expect(requests[0].method).to.equal(MethodEnum.POST);
-    expect(requests[0].requestHeaders['Content-Type']).to.equal('application/json;charset=utf-8');
-    expect(requests[0].requestBody).to.equal(JSON.stringify(testData));
+    setTimeout(() => {
+      expect(requests).to.have.lengthOf(1);
+      expect(requests[0].method).to.equal(MethodEnum.POST);
+      expect(requests[0].requestHeaders['Content-Type']).to.equal('application/json;charset=utf-8');
+      expect(requests[0].requestBody).to.equal(JSON.stringify(testData));
+      done();
+    }, 0);
   });
 
-  it('должен отправлять данные как JSON при PUT-запросах', () => {
+  it('должен отправлять данные как JSON при PUT-запросах', (done) => {
     const testURL = '/api/test';
     const testData = { key: 'value' };
 
     http.put(testURL, { data: testData });
 
-    expect(requests).to.have.lengthOf(1);
-    expect(requests[0].method).to.equal(MethodEnum.PUT);
-    expect(requests[0].requestHeaders['Content-Type']).to.equal('application/json;charset=utf-8');
-    expect(requests[0].requestBody).to.equal(JSON.stringify(testData));
+    setTimeout(() => {
+      expect(requests).to.have.lengthOf(1);
+      expect(requests[0].method).to.equal(MethodEnum.PUT);
+      expect(requests[0].requestHeaders['Content-Type']).to.equal('application/json;charset=utf-8');
+      expect(requests[0].requestBody).to.equal(JSON.stringify(testData));
+      done();
+    }, 0);
   });
 
   it('должен корректно отправлять DELETE-запросы', () => {
