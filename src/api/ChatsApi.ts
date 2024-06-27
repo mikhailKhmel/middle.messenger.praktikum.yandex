@@ -11,9 +11,6 @@ export class ChatsApi extends HTTPTransport {
   async createChat(data: { title: string }) {
     const res = await this.post(`${this.chatUrl}`, {
       data,
-      headers: {
-        'content-type': 'application/json',
-      },
     });
     return res;
   }
@@ -23,22 +20,16 @@ export class ChatsApi extends HTTPTransport {
     return JSON.parse(res.response);
   }
 
-  async addUser(data: { users: number[], chatId: number }) {
+  async addUser(data: { users: number[]; chatId: number }) {
     const res = await this.put(`${this.chatUrl}/users`, {
       data,
-      headers: {
-        'content-type': 'application/json',
-      },
     });
     return res;
   }
 
-  async deleteUser(data: { users: number[], chatId: number }) {
+  async deleteUser(data: { users: number[]; chatId: number }) {
     const res = await this.delete(`${this.chatUrl}/users`, {
       data,
-      headers: {
-        'content-type': 'application/json',
-      },
     });
     return res;
   }
