@@ -27,15 +27,20 @@ export class Chat extends Block {
 
   async loadChat() {
     const id = this.props.chatId;
-    const users = (await (new ChatsApi().getChatUsers({ id }))).map((user: any) => new User({
-      id: user.id,
-      chatId: this.props.chatId,
-      first_name: user.first_name,
-      second_name: user.second_name,
-      onRefresh: this.loadChat,
-    }));
-    const { token } = (await (new ChatsApi().token(id)));
-    const socket = new WSTransport(`${WEBSCOKET_URL}/${this.props.userId}/${this.props.chatId}/${token}`);
+    const users = (await new ChatsApi().getChatUsers({ id })).map(
+      (user: any) =>
+        new User({
+          id: user.id,
+          chatId: this.props.chatId,
+          first_name: user.first_name,
+          second_name: user.second_name,
+          onRefresh: this.loadChat,
+        }),
+    );
+    const { token } = await new ChatsApi().token(id);
+    const socket = new WSTransport(
+      `${WEBSCOKET_URL}/${this.props.userId}/${this.props.chatId}/${token}`,
+    );
     await socket.connect();
     socket.send({
       content: '0',
@@ -66,7 +71,7 @@ export class Chat extends Block {
             const formData = new FormData(event.target);
             formData.append('chatId', this.props.chatId);
             try {
-              await (new ChatsApi().updateAvatar(formData));
+              await new ChatsApi().updateAvatar(formData);
               this.props.onRefresh();
             } catch (error: unknown) {
               console.error(error);
@@ -80,22 +85,19 @@ export class Chat extends Block {
       }),
       form: new Form({
         children: new SendMessageForm({
-
           messageInput: new Input({
             id: 'message',
             name: 'message',
             type: 'text',
           }),
           sendButton: new SendButton({}),
-
         }),
         events: {
           submit: async (event: Event) => {
             event.preventDefault();
             if (!(event.target instanceof HTMLFormElement)) return;
             const formData = new FormData(event.target);
-            const message = formData.get('message')
-              ?.toString() ?? '';
+            const message = formData.get('message')?.toString() ?? '';
             if (!message) return;
             this.props.socket.send({
               content: message,
@@ -105,7 +107,6 @@ export class Chat extends Block {
           },
         },
       }),
-
     };
     return this.compile(chatTmpl, this.props);
   }
@@ -122,10 +123,10 @@ class User extends Block {
       delete: new DeleteUserButton({
         events: {
           click: async () => {
-            await (new ChatsApi().deleteUser({
+            await new ChatsApi().deleteUser({
               chatId: this.props.chatId,
               users: [this.props.id],
-            }));
+            });
             this.props.onRefresh();
           },
         },

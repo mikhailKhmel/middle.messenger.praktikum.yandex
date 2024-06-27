@@ -19,23 +19,25 @@ export class AddUser extends Block {
           event.preventDefault();
           if (!(event.target instanceof HTMLFormElement)) return;
           const formData = new FormData(event.target);
-          const login = formData.get('login')
-            ?.toString() ?? '';
+          const login = formData.get('login')?.toString() ?? '';
           if (!login) return;
-          const foundUsers = await (new UserApi().searchUser({ login }));
-          const foundUsersBlocks = foundUsers.map((user: any) => new FoundUser({
-            first_name: user.first_name,
-            second_name: user.second_name,
-            events: {
-              click: async () => {
-                await (new ChatsApi().addUser({
-                  users: [user.id],
-                  chatId: this.props.chatId,
-                }));
-                this.props.onRefresh();
-              },
-            },
-          }));
+          const foundUsers = await new UserApi().searchUser({ login });
+          const foundUsersBlocks = foundUsers.map(
+            (user: any) =>
+              new FoundUser({
+                first_name: user.first_name,
+                second_name: user.second_name,
+                events: {
+                  click: async () => {
+                    await new ChatsApi().addUser({
+                      users: [user.id],
+                      chatId: this.props.chatId,
+                    });
+                    this.props.onRefresh();
+                  },
+                },
+              }),
+          );
           result.setChildren({ result: foundUsersBlocks });
         },
       },
@@ -45,12 +47,15 @@ export class AddUser extends Block {
       form,
       result,
     };
-    return this.compile(`
+    return this.compile(
+      `
     <dialog id="userSearchDialog">
       <h2>Поиск пользователя:</h2>
       {{{form}}}
        {{{result}}}
-    </dialog>`, this.props);
+    </dialog>`,
+      this.props,
+    );
   }
 }
 
@@ -60,11 +65,14 @@ class AddUserForm extends Block {
   }
 
   render(): DocumentFragment | null {
-    return this.compile(`
+    return this.compile(
+      `
       <input type="text" id="login" name="login" required>
       <button type="submit">Найти</button>
       <button type="button" onclick="window.userSearchDialog.close()">Закрыть</button>
-    `, this.props);
+    `,
+      this.props,
+    );
   }
 }
 
@@ -74,8 +82,11 @@ class UsersResult extends Block {
   }
 
   render(): DocumentFragment | null {
-    return this.compile(`
+    return this.compile(
+      `
       {{{result}}}
-    `, this.props);
+    `,
+      this.props,
+    );
   }
 }

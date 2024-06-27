@@ -30,8 +30,10 @@ export default class Messages extends Block {
 
   async loadMessages() {
     if (!this.props.chatdId) return;
-    const { token } = (await (new ChatsApi().token(this.props.chatId)));
-    const socket = new WSTransport(`${WEBSCOKET_URL}/${this.props.userId}/${this.props.chatId}/${token}`);
+    const { token } = await new ChatsApi().token(this.props.chatId);
+    const socket = new WSTransport(
+      `${WEBSCOKET_URL}/${this.props.userId}/${this.props.chatId}/${token}`,
+    );
     await socket.connect();
     socket.send({
       content: '0',
@@ -48,22 +50,19 @@ export default class Messages extends Block {
       ...this.children,
       form: new Form({
         children: new SendMessageForm({
-
           messageInput: new Input({
             id: 'message',
             name: 'message',
             type: 'text',
           }),
           sendButton: new SendButton({}),
-
         }),
         events: {
           submit: async (event: Event) => {
             event.preventDefault();
             if (!(event.target instanceof HTMLFormElement)) return;
             const formData = new FormData(event.target);
-            const message = formData.get('message')
-              ?.toString() ?? '';
+            const message = formData.get('message')?.toString() ?? '';
             if (!message) return;
             this.props.socket.send({
               content: message,

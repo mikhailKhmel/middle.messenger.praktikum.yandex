@@ -7,8 +7,7 @@ interface Listeners {
 export default class EventBus {
   private listeners: Listeners = {};
 
-  constructor() {
-  }
+  constructor() {}
 
   on(event: string, callback: Listener) {
     if (!this.listeners[event]) {

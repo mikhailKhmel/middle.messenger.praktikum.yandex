@@ -70,7 +70,9 @@ export class WSTransport extends EventBus {
           return;
         }
         this.emit('message', data);
-      } catch (e) { /* empty */ }
+      } catch (e) {
+        /* empty */
+      }
     });
   }
 }

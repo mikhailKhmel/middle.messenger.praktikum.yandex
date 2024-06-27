@@ -3,7 +3,11 @@ import Input from '../../components/input';
 import Block, { Props } from '../../types/Block.ts';
 import signupTmpl from './signup.tmpl';
 import {
-  validateEmail, validateLogin, validateName, validatePassword, validatePhone,
+  validateEmail,
+  validateLogin,
+  validateName,
+  validatePassword,
+  validatePhone,
 } from '../../utils/validation';
 import FormInput from '../../components/forminput';
 import Button from '../../components/button';
@@ -20,7 +24,6 @@ export class SignUp extends Block {
   render(): DocumentFragment {
     const button = new Button({
       label: 'Зарегистрироваться',
-
     });
     const inputEmail = new Input({
       id: 'email',
@@ -187,17 +190,17 @@ export class SignUp extends Block {
           }
 
           if (
-            isEmailValidate
-            && isLoginValidate
-            && isFirstnameValidate
-            && isLastnameValidate
-            && isPhoneValidate
-            && isFirstPasswordValidate
-            && isSecondPasswordValidate
-            && isPasswordsEquel
+            isEmailValidate &&
+            isLoginValidate &&
+            isFirstnameValidate &&
+            isLastnameValidate &&
+            isPhoneValidate &&
+            isFirstPasswordValidate &&
+            isSecondPasswordValidate &&
+            isPasswordsEquel
           ) {
             try {
-              const response = await (new AuthApi()).signup({
+              const response = await new AuthApi().signup({
                 email,
                 login,
                 first_name: firstname,

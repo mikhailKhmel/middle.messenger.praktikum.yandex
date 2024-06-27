@@ -22,10 +22,9 @@ export default class AddChatButton extends Block {
           event.preventDefault();
           if (!(event.target instanceof HTMLFormElement)) return;
           const formData = new FormData(event.target);
-          const title = formData.get('title')
-            ?.toString() ?? '';
+          const title = formData.get('title')?.toString() ?? '';
           if (!title) return;
-          await (new ChatsApi().createChat({ title }));
+          await new ChatsApi().createChat({ title });
           this.props.onRefresh();
         },
       },
@@ -44,10 +43,13 @@ class AddChatForm extends Block {
   }
 
   render(): DocumentFragment | null {
-    return this.compile(`
+    return this.compile(
+      `
       <input type="text" id="title" name="title" required>
       <button type="submit">Подвердить</button>
       <button type="button" onclick="window.chatTitleDialog.close()">Закрыть</button>
-    `, this.props);
+    `,
+      this.props,
+    );
   }
 }

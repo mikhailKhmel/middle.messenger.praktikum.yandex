@@ -3,12 +3,8 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "husky": {
-    "hooks": {
-      "pre-commit": "prettier --write \"src/**/*.{js,ts,tsx,json,css}\" && eslint ./src --ext .js,.ts,.tsx --fix && git add -A ."
-    }
-  },
   "scripts": {
+    "prepare": "husky",
     "lint": "eslint ./src --ext .js,.ts,.tsx",
     "lint:fix": "eslint ./src --ext .js,.ts,.tsx --fix",
     "format": "prettier --write \"src/**/*.{js,ts,tsx,json,css}\"",

@@ -2,7 +2,12 @@ import Button from '../../components/button';
 import FormInput from '../../components/forminput';
 import Input from '../../components/input';
 import Block, { Props } from '../../types/Block.ts';
-import { validateEmail, validateLogin, validateName, validatePhone } from '../../utils/validation.ts';
+import {
+  validateEmail,
+  validateLogin,
+  validateName,
+  validatePhone,
+} from '../../utils/validation.ts';
 import './settings.less';
 import editTmpl from './settings.tmpl.ts';
 import Settingsform from '../../components/settingsform';
@@ -113,18 +118,12 @@ export class Settings extends Block {
           event.preventDefault();
           if (!(event.target instanceof HTMLFormElement)) return;
           const formData = new FormData(event.target);
-          const email = formData.get('email')
-            ?.toString() ?? '';
-          const login = formData.get('login')
-            ?.toString() ?? '';
-          const firstname = formData.get('first_name')
-            ?.toString() ?? '';
-          const lastname = formData.get('last_name')
-            ?.toString() ?? '';
-          const displayname = formData.get('display_name')
-            ?.toString() ?? '';
-          const phone = formData.get('phone')
-            ?.toString() ?? '';
+          const email = formData.get('email')?.toString() ?? '';
+          const login = formData.get('login')?.toString() ?? '';
+          const firstname = formData.get('first_name')?.toString() ?? '';
+          const lastname = formData.get('last_name')?.toString() ?? '';
+          const displayname = formData.get('display_name')?.toString() ?? '';
+          const phone = formData.get('phone')?.toString() ?? '';
 
           const emailValidate = validateEmail(email);
           const loginValidate = validateLogin(login);
@@ -132,21 +131,21 @@ export class Settings extends Block {
           const lastnameValidate = validateLogin(lastname);
           const phoneValidate = validateLogin(phone);
           if (
-            emailValidate
-            && loginValidate
-            && firstnameValidate
-            && lastnameValidate
-            && phoneValidate
+            emailValidate &&
+            loginValidate &&
+            firstnameValidate &&
+            lastnameValidate &&
+            phoneValidate
           ) {
             try {
-              const res = await (new UserApi().update({
+              const res = await new UserApi().update({
                 first_name: firstname,
                 last_name: lastname,
                 login,
                 email,
                 phone,
                 display_name: displayname,
-              }));
+              });
               if (res) {
                 router.back();
               }
@@ -173,7 +172,7 @@ export class Settings extends Block {
           if (!(event.target instanceof HTMLFormElement)) return;
           const formData = new FormData(event.target);
           try {
-            await (new UserApi().updateAvatar(formData));
+            await new UserApi().updateAvatar(formData);
             router.back();
           } catch (error: unknown) {
             console.error(error);
