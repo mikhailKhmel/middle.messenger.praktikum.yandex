@@ -12,7 +12,7 @@
     "start": "npm run build && node server.js",
     "preview": "vite preview",
     "test": "mocha",
-    "prepare": "husky"
+    "prepare": "husky install"
   },
   "devDependencies": {
     "@types/chai": "^4.3.16",
