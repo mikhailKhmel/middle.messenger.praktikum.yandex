@@ -23,7 +23,7 @@ export class AddUser extends Block {
           if (!login) return;
           const foundUsers = await new UserApi().searchUser({ login });
           const foundUsersBlocks = foundUsers.map(
-            (user: any) =>
+            (user: { first_name: string; second_name: string; id: number }) =>
               new FoundUser({
                 first_name: user.first_name,
                 second_name: user.second_name,

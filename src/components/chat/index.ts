@@ -28,7 +28,7 @@ export class Chat extends Block {
   async loadChat() {
     const id = this.props.chatId;
     const users = (await new ChatsApi().getChatUsers({ id })).map(
-      (user: any) =>
+      (user: { first_name: string; second_name: string; id: number }) =>
         new User({
           id: user.id,
           chatId: this.props.chatId,

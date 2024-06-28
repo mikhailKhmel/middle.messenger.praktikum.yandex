@@ -9,7 +9,7 @@ export enum MethodEnum {
 export type Options = {
   headers?: Record<string, string>;
   method: MethodEnum;
-  data?: Record<string, any> | FormData;
+  data?: Record<string, unknown> | FormData;
 };
 
 export function queryStringify(data: Record<string, any>): string {
