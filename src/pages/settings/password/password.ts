@@ -54,7 +54,6 @@ export class Password extends Block {
     const password2Form = new FormInput({ input: newPassword2 });
     const saveButton = new Button({
       label: 'Сохранить',
-
     });
     const passwordForm = new Passwordform({
       oldPassword,
@@ -69,19 +68,17 @@ export class Password extends Block {
           event.preventDefault();
           if (!(event.target instanceof HTMLFormElement)) return;
           const formData = new FormData(event.target);
-          const password1 = formData.get('newPassword1')
-            ?.toString() ?? '';
-          const password2 = formData.get('newPassword2')
-            ?.toString() ?? '';
+          const password1 = formData.get('newPassword1')?.toString() ?? '';
+          const password2 = formData.get('newPassword2')?.toString() ?? '';
           const validate1 = validatePassword(password1);
           const validate2 = validatePassword(password2);
           const validate3 = password1 === password2;
           if (validate1 && validate2 && validate3) {
             try {
-              const res = await (new UserApi().updatePassword({
+              const res = await new UserApi().updatePassword({
                 oldPassword: password1,
                 newPassword: password2,
-              }));
+              });
               if (res) {
                 router.back();
               }

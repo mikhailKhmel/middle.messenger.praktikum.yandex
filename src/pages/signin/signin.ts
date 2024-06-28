@@ -46,7 +46,6 @@ export class SignIn extends Block {
     const passwordFormInput = new FormInput({ input: passwordInput });
     const button = new Button({
       label: 'Войти',
-
     });
     const signInForm = new SignInForm({
       loginInput: loginFormInput,
@@ -60,10 +59,8 @@ export class SignIn extends Block {
           event.preventDefault();
           if (!(event.target instanceof HTMLFormElement)) return;
           const formData = new FormData(event.target);
-          const login = formData.get('login')
-            ?.toString() ?? '';
-          const password = formData.get('password')
-            ?.toString() ?? '';
+          const login = formData.get('login')?.toString() ?? '';
+          const password = formData.get('password')?.toString() ?? '';
           const isLoginValidate = validateLogin(login);
           if (!isLoginValidate) {
             loginFormInput.setProps({ error: 'Логин невалиден' });
@@ -75,7 +72,7 @@ export class SignIn extends Block {
 
           if (isLoginValidate && isPasswordValidate) {
             try {
-              const response = await (new AuthApi()).signin({
+              const response = await new AuthApi().signin({
                 login,
                 password,
               });

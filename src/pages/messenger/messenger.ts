@@ -32,26 +32,27 @@ export class Messenger extends Block {
   }
 
   refresh() {
-    new ChatsApi().chats()
-      .then((res) => {
-        const chats: ChatButton[] = res.map((x: ChatType) => new ChatButton({
-          name: x.title,
-          avatar: x.avatar,
-          events: {
-            click: () => {
-              (this.children.chat as Chat)?.setProps({ chatId: x.id });
-              (this.children.chat as Chat)?.show();
+    new ChatsApi().chats().then((res) => {
+      const chats: ChatButton[] = res.map(
+        (x: ChatType) =>
+          new ChatButton({
+            name: x.title,
+            avatar: x.avatar,
+            events: {
+              click: () => {
+                (this.children.chat as Chat)?.setProps({ chatId: x.id });
+                (this.children.chat as Chat)?.show();
+              },
             },
-          },
-        }));
-        this.setChildren({
-          chats,
-        });
+          }),
+      );
+      this.setChildren({
+        chats,
       });
-    new AuthApi().getUserInfo()
-      .then((res) => {
-        this.setProps({ userId: res.id });
-      });
+    });
+    new AuthApi().getUserInfo().then((res) => {
+      this.setProps({ userId: res.id });
+    });
   }
 
   render(): DocumentFragment {
@@ -78,7 +79,9 @@ export class Messenger extends Block {
       events: {
         click: () => {
           const trimMessage = message.trim();
-          messageFormInput.setProps({ error: !trimMessage ? 'Сообщение не может быть пустым' : '' });
+          messageFormInput.setProps({
+            error: !trimMessage ? 'Сообщение не может быть пустым' : '',
+          });
         },
       },
     });

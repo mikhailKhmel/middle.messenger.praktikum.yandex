@@ -5,6 +5,8 @@
     "@typescript-eslint"
   ],
   "rules": {
+    "operator-linebreak": "off",
+    "prefer-promise-reject-errors": "off",
     "object-curly-newline": "off",
     "no-restricted-syntax": "off",
     "max-classes-per-file": "off",

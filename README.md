@@ -6,6 +6,14 @@
 
 1. `npm install` - установка зависимостей;
 2. `npm run start` - сборка продакт-версии и запуск сервера на порту 3000.
+3. `npm run lint` - линтинг
+4. `npm run lint:fix` - исправление ошибок eslint
+5. `npm run format` - форматирование Prettier
+6. `npm run dev` - запуск dev-сервера
+7. `npm run build` - сборка prod-версии
+8. `npm run preview` - запуск preview-версии
+9. `npm run test` - запуск тестов
+10. `npm run prepare` - подготовка проекта
 
 ## Страницы
 

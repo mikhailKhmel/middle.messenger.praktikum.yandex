@@ -2,7 +2,7 @@ import './chat.less';
 import Block, { Props } from '../../types/Block.ts';
 import chatButtonTmpl from './ChatButton.tmpl.ts';
 
-interface IProps extends Props{
+interface IProps extends Props {
   name: string;
   avatar: string;
 }

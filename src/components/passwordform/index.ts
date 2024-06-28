@@ -2,7 +2,7 @@ import Block, { Props } from '../../types/Block.ts';
 import './passwordform.less';
 import passwordformTmpl from './passwordform.tmpl.ts';
 
-interface IProps extends Props{
+interface IProps extends Props {
   oldPassword: Block;
   newPassword1: Block;
   newPassword2: Block;

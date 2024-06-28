@@ -5,47 +5,38 @@ export class ChatsApi extends HTTPTransport {
 
   async chats() {
     const res = await this.get(`${this.chatUrl}`);
-    return JSON.parse(res.response);
+    return JSON.parse(res);
   }
 
   async createChat(data: { title: string }) {
     const res = await this.post(`${this.chatUrl}`, {
       data,
-      headers: {
-        'content-type': 'application/json',
-      },
     });
     return res;
   }
 
   async getChatUsers({ id }: { id: number }) {
     const res = await this.get(`${this.chatUrl}/${id}/users`);
-    return JSON.parse(res.response);
+    return JSON.parse(res);
   }
 
-  async addUser(data: { users: number[], chatId: number }) {
+  async addUser(data: { users: number[]; chatId: number }) {
     const res = await this.put(`${this.chatUrl}/users`, {
       data,
-      headers: {
-        'content-type': 'application/json',
-      },
     });
     return res;
   }
 
-  async deleteUser(data: { users: number[], chatId: number }) {
+  async deleteUser(data: { users: number[]; chatId: number }) {
     const res = await this.delete(`${this.chatUrl}/users`, {
       data,
-      headers: {
-        'content-type': 'application/json',
-      },
     });
     return res;
   }
 
   async token(id: number) {
     const res = await this.post(`${this.chatUrl}/token/${id}`);
-    return JSON.parse(res.response);
+    return JSON.parse(res);
   }
 
   async updateAvatar(data: FormData) {

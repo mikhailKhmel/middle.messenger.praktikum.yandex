@@ -2,7 +2,7 @@ import Block, { Props } from '../../types/Block.ts';
 import './settingsform.less';
 import settingsformTmpl from './settingsform.tmpl.ts';
 
-interface IProps extends Props{
+interface IProps extends Props {
   inputEmail: Block;
   inputLogin: Block;
   inputFirstname: Block;
